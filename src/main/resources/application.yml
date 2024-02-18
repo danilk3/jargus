@@ -1,0 +1,6 @@
+tsDatabase:
+  url: jdbc:h2:~/jargus_db
+  username: user
+  password: pass
+  driverClassName: org.h2.Driver
+  shapshotSaveInterval: 10000
