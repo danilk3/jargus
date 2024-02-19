@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class JargusMetricsConfig {
-    @Bean
-    public TsDatabaseClient tsDatabaseClient() {
-        return new TsDatabaseClient();
-    }
+//    @Bean
+//    public TsDatabaseClient tsDatabaseClient() {
+//        return new TsDatabaseClient();
+//    }
 }

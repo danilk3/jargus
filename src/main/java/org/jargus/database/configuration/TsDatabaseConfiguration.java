@@ -26,7 +26,7 @@ public class TsDatabaseConfiguration {
     }
 
     @Bean
-    public NamedParameterJdbcTemplate jdbcTemplate(DataSource dataSource) {
+    public NamedParameterJdbcTemplate jdbcTemplateA(DataSource dataSource) {
         return new NamedParameterJdbcTemplate(dataSource);
     }
 
