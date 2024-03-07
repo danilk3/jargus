@@ -1,4 +1,4 @@
-package org.jargus.alert.service;
+package org.jargus.analysis.service;
 
 import org.jargus.common.model.Metric;
 
