@@ -1,4 +1,4 @@
-package org.jargus.analysis.model;
+package org.jargus.collect.model;
 
 /**
  * @author Bazhov N.S.

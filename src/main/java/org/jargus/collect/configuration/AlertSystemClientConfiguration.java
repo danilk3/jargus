@@ -1,4 +1,4 @@
-package org.jargus.alert.configuration;
+package org.jargus.collect.configuration;
 
 /**
  * @author Bazhov N.S.
