@@ -1,11 +1,11 @@
 package org.jargus.collect.service;
 
 import org.jargus.collect.model.DatabaseMetricsRequestParams;
-import org.jargus.collect.model.MetricInfo;
+import org.jargus.collect.model.RawMetrics;
 
 /**
  * @author Bazhov N.S.
  */
 public interface InternalDatabaseService {
-    MetricInfo getMetrics(DatabaseMetricsRequestParams databaseMetricsRequestParams);
+    RawMetrics getMetrics(DatabaseMetricsRequestParams databaseMetricsRequestParams);
 }

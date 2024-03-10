@@ -5,13 +5,13 @@ import org.jargus.collect.mapper.ModuleRequestMapper;
 import org.jargus.collect.mapper.ModuleResponseMapper;
 import org.jargus.collect.model.DatabaseMetricsRequestParams;
 import org.jargus.collect.model.ExportMetricsRequestParams;
-import org.jargus.collect.model.MetricInfo;
+import org.jargus.collect.model.RawMetrics;
 import org.jargus.analyze.service.AnomalyMetricsAnalysisService;
 import org.jargus.collect.service.InternalDatabaseService;
 import org.jargus.collect.service.MetricsCollectionService;
 import org.jargus.collect.service.RequestFilterService;
-import org.jargus.common.dto.ModuleRequest;
-import org.jargus.common.dto.ModuleResponse;
+import org.jargus.common.dto.CollectMetricsRequest;
+import org.jargus.common.model.Metric;
 
 /**
  * @author Bazhov N.S.
@@ -27,20 +27,20 @@ public class MetricsRequestControllerImpl implements MetricsRequestController {
     private final ModuleResponseMapper moduleResponseMapper;
 
     @Override
-    public ModuleResponse exportMetricsFromSidecar(ModuleRequest request) {
+    public Metric exportMetricsFromSidecar(CollectMetricsRequest request) {
         ExportMetricsRequestParams exportMetricsRequestParams = moduleRequestMapper.mapExportMetricsRequestParams(request);
-        MetricInfo metricInfo = metricsCollectionService.exportMetrics(exportMetricsRequestParams);
-        anomalyMetricsAnalysisService.analyzeMetrics(metricInfo);
+        RawMetrics rawMetrics = metricsCollectionService.exportMetrics(exportMetricsRequestParams);
+        anomalyMetricsAnalysisService.analyzeMetrics(rawMetrics);
 
-        return moduleResponseMapper.mapMetrics(metricInfo);
+        return moduleResponseMapper.mapMetrics(rawMetrics);
     }
 
     @Override
-    public ModuleResponse exportMetricsFromInternalDatabase(ModuleRequest request) {
+    public Metric exportMetricsFromInternalDatabase(CollectMetricsRequest request) {
         DatabaseMetricsRequestParams databaseMetricsRequestParams = moduleRequestMapper.mapDatabaseMetricsRequestParams(request);
-        MetricInfo metricInfo = internalDatabaseService.getMetrics(databaseMetricsRequestParams);
-        anomalyMetricsAnalysisService.analyzeMetrics(metricInfo);
+        RawMetrics rawMetrics = internalDatabaseService.getMetrics(databaseMetricsRequestParams);
+        anomalyMetricsAnalysisService.analyzeMetrics(rawMetrics);
 
-        return moduleResponseMapper.mapMetrics(metricInfo);
+        return moduleResponseMapper.mapMetrics(rawMetrics);
     }
 }
