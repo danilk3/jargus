@@ -11,7 +11,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @SpringBootApplication
 @EnableFeignClients
-@EnableConfigurationProperties(DatabaseConfig.class)
+@EnableConfigurationProperties(StorageConfig.class)
 public class JargusMetricsApplication {
     public static void main(String[] args) {
         SpringApplication.run(JargusMetricsApplication.class);
