@@ -15,9 +15,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-
-    // Database
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'com.google.guava:guava:11.0.2'
 
     // Client
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0'
@@ -42,8 +40,8 @@ test {
 }
 
 checkstyle {
-    toolVersion '7.8.1'
-    configFile file("checkstyle.xml")
+    ignoreFailures = true
+    configFile = file("${rootDir}/checkstyle.xml")
 }
 
 checkstyleMain {

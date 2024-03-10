@@ -1,11 +1,5 @@
-spring:
-  datasource:
-    driverClassName: org.h2.Driver
-  jpa:
-    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
-tsDatabase:
-  url: jdbc:h2:~/jargus_db
-  username: user
-  password: pass
-  driverClassName: org.h2.Driver
-  shapshotSaveInterval: 10000
+tsdb:
+  cleanUpFixedDelay: PT1M
+  metricSecondsTtl: P30D
+  metricMinutesTtl: P30D
+  metricHoursTtl: P30D
