@@ -1,7 +1,7 @@
 package org.jargus.analyze.storage;
 
 import lombok.RequiredArgsConstructor;
-import org.jargus.collect.model.MetricInfo;
+import org.jargus.collect.model.RawMetrics;
 
 /**
  * @author Bazhov N.S.
@@ -11,7 +11,7 @@ public class MetricsAnalysisRuleValidatorImpl implements MetricsAnalysisRuleVali
     private final MetricsAnalysisRuleStorage metricsAnalysisRuleStorage;
     
     @Override
-    public boolean matches(MetricInfo metricInfo) {
+    public boolean matches(RawMetrics rawMetrics) {
         return false;
     }
 }

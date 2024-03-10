@@ -2,7 +2,7 @@ package org.jargus.analyze.service;
 
 import lombok.RequiredArgsConstructor;
 import org.jargus.alert.client.AlertSystemClient;
-import org.jargus.collect.model.MetricInfo;
+import org.jargus.collect.model.RawMetrics;
 import org.jargus.analyze.storage.MetricsAnalysisRuleValidator;
 
 /**
@@ -14,9 +14,9 @@ public class AnomalyMetricsAnalysisServiceImpl implements AnomalyMetricsAnalysis
     private final AlertSystemClient alertSystemClient;
 
     @Override
-    public void analyzeMetrics(MetricInfo metricInfo) {
-        if (metricsAnalysisRuleValidator.matches(metricInfo)){
-            alertSystemClient.alert(metricInfo);
+    public void analyzeMetrics(RawMetrics rawMetrics) {
+        if (metricsAnalysisRuleValidator.matches(rawMetrics)){
+            alertSystemClient.alert(rawMetrics);
         }
     }
 }

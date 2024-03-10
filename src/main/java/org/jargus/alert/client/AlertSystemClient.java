@@ -1,6 +1,6 @@
 package org.jargus.alert.client;
 
-import org.jargus.collect.model.MetricInfo;
+import org.jargus.collect.model.RawMetrics;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,5 +11,5 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient("alertClient")
 public interface AlertSystemClient {
     @RequestMapping(method = RequestMethod.POST)
-    void alert(MetricInfo metricInfo);
+    void alert(RawMetrics rawMetrics);
 }

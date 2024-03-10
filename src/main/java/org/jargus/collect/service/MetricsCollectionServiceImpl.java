@@ -3,7 +3,7 @@ package org.jargus.collect.service;
 import lombok.RequiredArgsConstructor;
 import org.jargus.collect.client.CollectMetricsClient;
 import org.jargus.collect.model.ExportMetricsRequestParams;
-import org.jargus.collect.model.MetricInfo;
+import org.jargus.collect.model.RawMetrics;
 
 /**
  * @author Bazhov N.S.
@@ -13,7 +13,7 @@ public class MetricsCollectionServiceImpl implements MetricsCollectionService {
     private final CollectMetricsClient collectMetricsClient;
 
     @Override
-    public MetricInfo exportMetrics(ExportMetricsRequestParams exportMetricsRequestParams) {
+    public RawMetrics exportMetrics(ExportMetricsRequestParams exportMetricsRequestParams) {
         return collectMetricsClient.export(exportMetricsRequestParams);
     }
 }
