@@ -1,6 +1,6 @@
 package org.jargus.database.models;
 
-import org.jargus.common.pojo.DataPoint;
+import org.jargus.common.model.DataPoint;
 import org.jargus.database.exception.UnsupportedGranularityException;
 import org.jargus.database.utils.TimestampRounder;
 
