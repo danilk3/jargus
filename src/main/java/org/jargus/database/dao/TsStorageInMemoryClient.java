@@ -1,6 +1,7 @@
-package org.jargus.database.service;
+package org.jargus.database.dao;
 
 import org.jargus.common.model.Metric;
+import org.jargus.database.service.TsStorage;
 
 /**
  * @author Kotelnikov D.M.

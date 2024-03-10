@@ -1,4 +1,4 @@
-package org.jargus.database.service;
+package org.jargus.database.dao;
 
 import org.jargus.common.model.Metric;
 
@@ -7,6 +7,5 @@ import org.jargus.common.model.Metric;
  */
 public interface TsStorageClient {
 
-    public void addDataPoint(Metric metric);
-
+    void addDataPoint(Metric metric);
 }

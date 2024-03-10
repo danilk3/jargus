@@ -6,7 +6,7 @@ import org.jargus.collect.mapper.ModuleResponseMapper;
 import org.jargus.collect.model.DatabaseMetricsRequestParams;
 import org.jargus.collect.model.ExportMetricsRequestParams;
 import org.jargus.collect.model.MetricInfo;
-import org.jargus.collect.service.AnomalyMetricsAnalysisService;
+import org.jargus.analyze.service.AnomalyMetricsAnalysisService;
 import org.jargus.collect.service.InternalDatabaseService;
 import org.jargus.collect.service.MetricsCollectionService;
 import org.jargus.collect.service.RequestFilterService;
