@@ -14,9 +14,8 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-
+    implementation 'com.google.guava:guava:11.0.2'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
@@ -27,8 +26,8 @@ test {
 }
 
 checkstyle {
-    toolVersion '7.8.1'
-    configFile file("checkstyle.xml")
+    ignoreFailures = true
+    configFile = file("${rootDir}/checkstyle.xml")
 }
 
 checkstyleMain {

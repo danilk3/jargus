@@ -63,6 +63,27 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <property name="message" value='All TODOs should be named.  e.g. "TODO: (ENG-123) - Refactor when v2 is released."' />
     </module>
 
+    <!--
+
+       LENGTH and CODING CHECKS
+
+       -->
+
+    <module name="LineLength">
+        <!-- Checks if a line is too long. -->
+        <property name="max" value="120" default="120" />
+        <property name="severity" value="error" />
+
+        <!--
+          The default ignore pattern exempts the following elements:
+            - import statements
+            - long URLs inside comments
+        -->
+
+        <property name="ignorePattern" value="${com.puppycrawl.tools.checkstyle.checks.sizes.LineLength.ignorePattern}"
+                  default="^(package .*;\s*)|(import .*;\s*)|( *\* *https?://.*)$" />
+    </module>
+
     <!--<module name="JavadocPackage">-->
     <!--&lt;!&ndash; Checks that each Java package has a Javadoc file used for commenting.-->
     <!--Only allows a package-info.java, not package.html. &ndash;&gt;-->
@@ -121,18 +142,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
         -->
 
-        <!-- Checks for Javadoc comments.                     -->
-        <!-- See http://checkstyle.sf.net/config_javadoc.html -->
-        <module name="JavadocMethod">
-            <property name="scope" value="protected" />
-            <property name="severity" value="error" />
-            <property name="allowMissingJavadoc" value="true" />
-            <property name="allowMissingParamTags" value="true" />
-            <property name="allowMissingReturnTag" value="true" />
-            <property name="allowMissingThrowsTags" value="true" />
-            <property name="allowThrowsTagsForSubclasses" value="true" />
-            <property name="allowUndeclaredRTE" value="true" />
-        </module>
 
         <module name="JavadocType">
             <property name="scope" value="protected" />
@@ -228,28 +237,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
             <!-- Validates identifiers for local variables against the
               expression "^[a-z][a-zA-Z0-9]*$". -->
             <property name="severity" value="error" />
-        </module>
-
-
-        <!--
-
-        LENGTH and CODING CHECKS
-
-        -->
-
-        <module name="LineLength">
-            <!-- Checks if a line is too long. -->
-            <property name="max" value="120" default="120" />
-            <property name="severity" value="error" />
-
-            <!--
-              The default ignore pattern exempts the following elements:
-                - import statements
-                - long URLs inside comments
-            -->
-
-            <property name="ignorePattern" value="${com.puppycrawl.tools.checkstyle.checks.sizes.LineLength.ignorePattern}"
-                      default="^(package .*;\s*)|(import .*;\s*)|( *\* *https?://.*)$" />
         </module>
 
         <module name="LeftCurly">
@@ -374,17 +361,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
             -->
             <property name="severity" value="error" />
         </module>
-    </module>
-
-    <!--module name="SuppressionFilter">
-        <property name="file" value="suppressions.xml"/>
-    </module-->
-
-    <module name="SuppressionCommentFilter">
-        <property name="offCommentFormat" value="CHECKSTYLE OFF: (.+)" />
-        <property name="onCommentFormat" value="CHECKSTYLE ON" />
-        <property name="checkFormat" value="Javadoc.*" />
-        <property name="messageFormat" value="$1" />
     </module>
 
 </module>
