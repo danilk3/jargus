@@ -1,13 +1,15 @@
 package org.jargus.collect.mapper;
 
-import org.jargus.collect.model.DatabaseMetricsRequestParams;
-import org.jargus.collect.model.ExportMetricsRequestParams;
+import org.jargus.collect.model.DatabaseMetricRequestParams;
+import org.jargus.collect.model.ExportMetricRequestParams;
 import org.jargus.common.dto.CollectMetricsRequest;
+import org.mapstruct.Mapper;
 
 /**
  * @author Bazhov N.S.
  */
+@Mapper
 public interface ModuleRequestMapper {
-    DatabaseMetricsRequestParams mapDatabaseMetricsRequestParams(CollectMetricsRequest request);
-    ExportMetricsRequestParams mapExportMetricsRequestParams(CollectMetricsRequest request);
+    DatabaseMetricRequestParams mapDatabaseMetricRequestParams(CollectMetricsRequest request);
+    ExportMetricRequestParams mapExportMetricRequestParams(CollectMetricsRequest request);
 }

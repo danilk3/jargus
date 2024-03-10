@@ -3,9 +3,7 @@ package org.jargus.collect.controller;
 import lombok.RequiredArgsConstructor;
 import org.jargus.collect.mapper.ModuleRequestMapper;
 import org.jargus.collect.mapper.ModuleResponseMapper;
-import org.jargus.collect.model.DatabaseMetricsRequestParams;
-import org.jargus.collect.model.ExportMetricsRequestParams;
-import org.jargus.collect.model.RawMetrics;
+import org.jargus.collect.model.RawMetric;
 import org.jargus.analyze.service.AnomalyMetricsAnalysisService;
 import org.jargus.collect.service.InternalDatabaseService;
 import org.jargus.collect.service.MetricsCollectionService;
@@ -28,19 +26,21 @@ public class MetricsRequestControllerImpl implements MetricsRequestController {
 
     @Override
     public Metric exportMetricsFromSidecar(CollectMetricsRequest request) {
-        ExportMetricsRequestParams exportMetricsRequestParams = moduleRequestMapper.mapExportMetricsRequestParams(request);
-        RawMetrics rawMetrics = metricsCollectionService.exportMetrics(exportMetricsRequestParams);
-        anomalyMetricsAnalysisService.analyzeMetrics(rawMetrics);
 
-        return moduleResponseMapper.mapMetrics(rawMetrics);
+
+
+        RawMetric rawMetric = metricsCollectionService.exportMetrics(moduleRequestMapper.mapExportMetricRequestParams(request));
+        anomalyMetricsAnalysisService.analyzeMetrics(rawMetric);
+
+        return moduleResponseMapper.mapMetrics(rawMetric);
     }
 
     @Override
     public Metric exportMetricsFromInternalDatabase(CollectMetricsRequest request) {
-        DatabaseMetricsRequestParams databaseMetricsRequestParams = moduleRequestMapper.mapDatabaseMetricsRequestParams(request);
-        RawMetrics rawMetrics = internalDatabaseService.getMetrics(databaseMetricsRequestParams);
-        anomalyMetricsAnalysisService.analyzeMetrics(rawMetrics);
 
-        return moduleResponseMapper.mapMetrics(rawMetrics);
+        RawMetric rawMetric = internalDatabaseService.getMetrics(null);
+        anomalyMetricsAnalysisService.analyzeMetrics(rawMetric);
+
+        return moduleResponseMapper.mapMetrics(rawMetric);
     }
 }

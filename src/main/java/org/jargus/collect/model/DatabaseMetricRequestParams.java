@@ -3,5 +3,5 @@ package org.jargus.collect.model;
 /**
  * @author Bazhov N.S.
  */
-public class RawMetrics {
+public class DatabaseMetricRequestParams {
 }

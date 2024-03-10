@@ -1,10 +1,10 @@
 package org.jargus.analyze.service;
 
-import org.jargus.collect.model.RawMetrics;
+import org.jargus.collect.model.RawMetric;
 
 /**
  * @author Bazhov N.S.
  */
 public interface AnomalyMetricsAnalysisService {
-    void analyzeMetrics(RawMetrics metric);
+    void analyzeMetrics(RawMetric metric);
 }

@@ -1,8 +1,8 @@
 package org.jargus.collect.service;
 
 import lombok.RequiredArgsConstructor;
-import org.jargus.collect.model.DatabaseMetricsRequestParams;
-import org.jargus.collect.model.RawMetrics;
+import org.jargus.collect.model.DatabaseMetricRequestParams;
+import org.jargus.collect.model.RawMetric;
 import org.jargus.database.dao.TsStorageClient;
 
 /**
@@ -13,7 +13,7 @@ public class InternalDatabaseServiceImpl implements InternalDatabaseService {
     private final TsStorageClient tsStorageClient;
 
     @Override
-    public RawMetrics getMetrics(DatabaseMetricsRequestParams databaseMetricsRequestParams) {
+    public RawMetric getMetrics(DatabaseMetricRequestParams databaseMetricRequestParams) {
         return null;
     }
 }

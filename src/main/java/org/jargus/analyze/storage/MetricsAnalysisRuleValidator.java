@@ -1,10 +1,10 @@
 package org.jargus.analyze.storage;
 
-import org.jargus.collect.model.RawMetrics;
+import org.jargus.collect.model.RawMetric;
 
 /**
  * @author Bazhov N.S.
  */
 public interface MetricsAnalysisRuleValidator {
-    boolean matches(RawMetrics rawMetrics);
+    boolean matches(RawMetric rawMetric);
 }
