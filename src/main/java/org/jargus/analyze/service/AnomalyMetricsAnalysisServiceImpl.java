@@ -1,10 +1,9 @@
-package org.jargus.collect.service;
+package org.jargus.analyze.service;
 
 import lombok.RequiredArgsConstructor;
-import org.jargus.collect.client.AlertSystemClient;
+import org.jargus.alert.client.AlertSystemClient;
 import org.jargus.collect.model.MetricInfo;
-import org.jargus.collect.storage.MetricsAnalysisRuleValidator;
-import org.jargus.common.model.Metric;
+import org.jargus.analyze.storage.MetricsAnalysisRuleValidator;
 
 /**
  * @author Bazhov N.S.

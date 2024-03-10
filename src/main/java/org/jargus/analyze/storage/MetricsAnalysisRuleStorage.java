@@ -1,4 +1,4 @@
-package org.jargus.collect.storage;
+package org.jargus.analyze.storage;
 
 /**
  * @author Bazhov N.S.

@@ -1,4 +1,4 @@
-package org.jargus.collect.service;
+package org.jargus.analyze.service;
 
 import org.jargus.collect.model.MetricInfo;
 

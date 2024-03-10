@@ -1,7 +1,7 @@
 package org.jargus.database.configuration;
 
-import org.jargus.database.service.TsStorageClient;
-import org.jargus.database.service.TsStorageInMemoryClient;
+import org.jargus.database.dao.TsStorageClient;
+import org.jargus.database.dao.TsStorageInMemoryClient;
 import org.jargus.database.service.MetricsCleanUpScheduler;
 import org.jargus.database.service.TsStorage;
 import org.springframework.context.annotation.Bean;

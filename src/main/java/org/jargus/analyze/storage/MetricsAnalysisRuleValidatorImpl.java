@@ -1,8 +1,7 @@
-package org.jargus.collect.storage;
+package org.jargus.analyze.storage;
 
 import lombok.RequiredArgsConstructor;
 import org.jargus.collect.model.MetricInfo;
-import org.jargus.common.model.Metric;
 
 /**
  * @author Bazhov N.S.
