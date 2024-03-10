@@ -1,6 +1,6 @@
 package org.jargus.database.service;
 
-import org.jargus.common.pojo.Metric;
+import org.jargus.common.model.Metric;
 
 /**
  * @author Kotelnikov D.M.

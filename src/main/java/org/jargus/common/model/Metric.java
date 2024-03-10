@@ -1,4 +1,4 @@
-package org.jargus.common.pojo;
+package org.jargus.common.model;
 
 import java.util.List;
 

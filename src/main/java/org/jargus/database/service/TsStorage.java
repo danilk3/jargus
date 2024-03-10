@@ -1,8 +1,8 @@
 package org.jargus.database.service;
 
 import com.google.common.collect.Sets;
-import org.jargus.common.pojo.Label;
-import org.jargus.common.pojo.Metric;
+import org.jargus.common.model.Label;
+import org.jargus.common.model.Metric;
 import org.jargus.database.models.Granularity;
 import org.jargus.database.models.MetricTable;
 
