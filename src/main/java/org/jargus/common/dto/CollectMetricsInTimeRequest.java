@@ -1,14 +1,13 @@
 package org.jargus.common.dto;
 
-
 /**
  * @author Bazhov N.S.
  */
-public abstract class CollectMetricsRequest {
+public class CollectMetricsInTimeRequest {
 
     private final String metricName;
 
-    public CollectMetricsRequest(String metricName) {
+    public CollectMetricsInTimeRequest(String metricName) {
         this.metricName = metricName;
     }
 }
