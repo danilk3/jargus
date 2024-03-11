@@ -1,6 +1,9 @@
 package org.jargus.api.controller;
 
+import org.jargus.collect.controller.MetricsRequestController;
 import org.jargus.common.dto.CollectMetricsFromInternalDatabaseRequest;
+import org.jargus.common.dto.CollectMetricsInTimeRequest;
+import org.jargus.common.dto.CollectMetricsRequest;
 import org.jargus.common.model.Metric;
 import org.jargus.database.dao.TsStorageClient;
 import org.springframework.web.bind.annotation.*;
@@ -16,25 +19,28 @@ import java.util.List;
 public class MetricsController {
 
     private final TsStorageClient tsStorageClient;
+    private final MetricsRequestController metricsRequestController;
 
-    public MetricsController(TsStorageClient tsStorageClient) {
+    public MetricsController(TsStorageClient tsStorageClient, MetricsRequestController metricsRequestController) {
         this.tsStorageClient = tsStorageClient;
+        this.metricsRequestController = metricsRequestController;
     }
 
     // todo: продумать выбор режима чтения
     @PostMapping("metrics-db")
     public List<Metric> getMetrics(@RequestBody CollectMetricsFromInternalDatabaseRequest request) {
-        return tsStorageClient.readMetrics(
-                request.getGranularity(),
-                request.getFromTime().map(Date::getTime),
-                request.getToTime().map(Date::getTime),
-                request.getMetricName(),
-                request.getLabels());
+        Metric metric = metricsRequestController.exportMetricsFromInternalDatabase(request);
+
+        return List.of(metric);
     }
 
     // todo: temp
     @GetMapping("metrics-in-time")
     public List<Metric> getMetrics() {
-        return List.of();
+        String metricName = "blabla";
+        CollectMetricsRequest collectMetricsRequest = new CollectMetricsInTimeRequest(metricName);
+        Metric metric = metricsRequestController.exportMetricsFromSidecar(collectMetricsRequest);
+
+        return List.of(metric);
     }
 }
