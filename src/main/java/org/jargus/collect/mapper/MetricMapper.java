@@ -10,6 +10,6 @@ import java.util.List;
 public class MetricMapper {
     public RawMetric map(String metric){
 
-        return new RawMetric(metric, null, 0);
+        return new RawMetric(metric, null, 0, null);
     }
 }

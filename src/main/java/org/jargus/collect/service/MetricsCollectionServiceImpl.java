@@ -5,6 +5,7 @@ import org.jargus.collect.client.CollectMetricsClient;
 import org.jargus.collect.mapper.MetricMapper;
 import org.jargus.collect.model.ExportMetricRequestParams;
 import org.jargus.collect.model.RawMetric;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * @author Bazhov N.S.
  */
+@Service
 @RequiredArgsConstructor
 public class MetricsCollectionServiceImpl implements MetricsCollectionService {
     private final CollectMetricsClient collectMetricsClient;
