@@ -1,17 +1,39 @@
 package org.jargus.common.dto;
 
-import org.jargus.common.model.DataPoint;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import org.jargus.common.model.Label;
+import org.jargus.database.models.Granularity;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Bazhov N.S.
  */
-public class CollectMetricsFromInternalDatabaseRequest extends CollectMetricsRequest {
-    private final DataPoint from;
-    private final DataPoint to;
+@Data
+public class CollectMetricsFromInternalDatabaseRequest {
 
-    public CollectMetricsFromInternalDatabaseRequest(String MetricName, DataPoint from, DataPoint to) {
-        super(MetricName);
-        this.from = from;
-        this.to = to;
+    private final String metricName;
+
+    private final Optional<Date> fromTime;
+
+    private final Optional<Date> toTime;
+
+    private final Granularity granularity;
+
+    private final List<Label> labels;
+
+    public CollectMetricsFromInternalDatabaseRequest(String metricName,
+                                                     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") Optional<Date> fromTime,
+                                                     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") Optional<Date> toTime,
+                                                     Optional<Granularity> granularity,
+                                                     List<Label> labels) {
+        this.metricName = metricName;
+        this.fromTime = fromTime;
+        this.toTime = toTime;
+        this.granularity = granularity.orElse(Granularity.SECONDS);
+        this.labels = labels;
     }
 }

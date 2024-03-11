@@ -1,31 +1,43 @@
 package org.jargus.database.models;
 
 import org.jargus.common.model.DataPoint;
+import org.jargus.common.model.Label;
 import org.jargus.database.exception.UnsupportedGranularityException;
 import org.jargus.database.utils.TimestampRounder;
 
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * @author Kotelnikov D.M.
  */
 public class MetricTable {
 
-    private final SortedMap<Long, Double> countSeconds = new TreeMap<>();
-    private final SortedMap<Long, Double> countMinutes = new TreeMap<>();
-    private final SortedMap<Long, Double> countHours = new TreeMap<>();
+    private final SortedMap<Long, MetricLabelsValueEntry> countSeconds = new TreeMap<>();
+    private final SortedMap<Long, MetricLabelsValueEntry> countMinutes = new TreeMap<>();
+    private final SortedMap<Long, MetricLabelsValueEntry> countHours = new TreeMap<>();
 
-    public synchronized void addDataPoint(DataPoint dataPoint) {
+    public synchronized void addDataPoint(DataPoint dataPoint, List<Label> labels) {
         long timestamp = dataPoint.timestamp();
         double value = dataPoint.value();
-        countSeconds.put(TimestampRounder.upToSeconds(timestamp), value);
-        countMinutes.put(TimestampRounder.upToMinutes(timestamp), value);
-        countHours.put(TimestampRounder.upToHours(timestamp), value);
+        countSeconds.put(TimestampRounder.upToSeconds(timestamp), new MetricLabelsValueEntry(value, labels));
+        countMinutes.put(TimestampRounder.upToMinutes(timestamp), new MetricLabelsValueEntry(value, labels));
+        countHours.put(TimestampRounder.upToHours(timestamp), new MetricLabelsValueEntry(value, labels));
     }
 
-    public Map<Long, Double> readDataPoints(Granularity granularity, long fromTime, long toTime) {
+    public Map<Long, MetricLabelsValueEntry> readDataPoints(Granularity granularity, Optional<Long> fromTime, Optional<Long> toTime) {
+        if (fromTime.isPresent() && toTime.isPresent()) {
+            return readDataPointsInterval(granularity, fromTime.get(), toTime.get());
+        }
+        if (fromTime.isPresent()) {
+            return readTailDataPoints(granularity, fromTime.get());
+        }
+        if (toTime.isPresent()) {
+            return readHeadDataPoints(granularity, toTime.get());
+        }
+        return readDataPoints(granularity);
+    }
+
+    private Map<Long, MetricLabelsValueEntry> readDataPointsInterval(Granularity granularity, long fromTime, long toTime) {
         return switch (granularity) {
             case SECONDS ->
                     readDataPointsByGranularity(countSeconds, TimestampRounder.upToSeconds(fromTime), TimestampRounder.upToSeconds(toTime));
@@ -37,7 +49,7 @@ public class MetricTable {
         };
     }
 
-    public Map<Long, Double> readTailDataPoints(Granularity granularity, long fromTime) {
+    private Map<Long, MetricLabelsValueEntry> readTailDataPoints(Granularity granularity, long fromTime) {
         return switch (granularity) {
             case SECONDS ->
                     readTailDataPointsByGranularity(countSeconds, TimestampRounder.upToSeconds(fromTime));
@@ -49,7 +61,7 @@ public class MetricTable {
         };
     }
 
-    public Map<Long, Double> readHeadDataPoints(Granularity granularity, long fromTime) {
+    private Map<Long, MetricLabelsValueEntry> readHeadDataPoints(Granularity granularity, long fromTime) {
         return switch (granularity) {
             case SECONDS ->
                     readHeadDataPointsByGranularity(countSeconds, TimestampRounder.upToSeconds(fromTime));
@@ -61,15 +73,24 @@ public class MetricTable {
         };
     }
 
-    private Map<Long, Double> readHeadDataPointsByGranularity(SortedMap<Long, Double> countSeconds, long toKey) {
+    private Map<Long, MetricLabelsValueEntry> readDataPoints(Granularity granularity) {
+        return switch (granularity) {
+            case SECONDS -> countSeconds;
+            case MINUTES -> countMinutes;
+            case HOURS -> countHours;
+            default -> throw new UnsupportedGranularityException(granularity);
+        };
+    }
+
+    private Map<Long, MetricLabelsValueEntry> readHeadDataPointsByGranularity(SortedMap<Long, MetricLabelsValueEntry> countSeconds, long toKey) {
         return countSeconds.headMap(toKey);
     }
 
-    private Map<Long, Double> readTailDataPointsByGranularity(SortedMap<Long, Double> countSeconds, long fromKey) {
+    private Map<Long, MetricLabelsValueEntry> readTailDataPointsByGranularity(SortedMap<Long, MetricLabelsValueEntry> countSeconds, long fromKey) {
         return countSeconds.tailMap(fromKey);
     }
 
-    private Map<Long, Double> readDataPointsByGranularity(SortedMap<Long, Double> countSeconds, long fromKey, long toKey) {
+    private Map<Long, MetricLabelsValueEntry> readDataPointsByGranularity(SortedMap<Long, MetricLabelsValueEntry> countSeconds, long fromKey, long toKey) {
         return countSeconds.subMap(fromKey, toKey);
     }
 
@@ -77,25 +98,25 @@ public class MetricTable {
                         long minutesDateTill,
                         long hoursDateTill) {
         long secondsKey = TimestampRounder.upToSeconds(secondsDateTill);
-        for (Map.Entry<Long, Double> entry : countSeconds.entrySet()) {
-            countSeconds.remove(entry.getKey());
-            if (entry.getKey() >= secondsKey) {
+        for (Long key : countSeconds.keySet()) {
+            countSeconds.remove(key);
+            if (key >= secondsKey) {
                 break;
             }
         }
 
         long minutesKey = TimestampRounder.upToMinutes(minutesDateTill);
-        for (Map.Entry<Long, Double> entry : countMinutes.entrySet()) {
-            countMinutes.remove(entry.getKey());
-            if (entry.getKey() >= minutesKey) {
+        for (Long key : countMinutes.keySet()) {
+            countMinutes.remove(key);
+            if (key >= minutesKey) {
                 break;
             }
         }
 
         long hoursKey = TimestampRounder.upToHours(hoursDateTill);
-        for (Map.Entry<Long, Double> entry : countHours.entrySet()) {
-            countHours.remove(entry.getKey());
-            if (entry.getKey() >= hoursKey) {
+        for (Long key : countHours.keySet()) {
+            countHours.remove(key);
+            if (key >= hoursKey) {
                 break;
             }
         }

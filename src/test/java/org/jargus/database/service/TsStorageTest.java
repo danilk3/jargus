@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -37,14 +37,22 @@ public class TsStorageTest {
 
         tsStorage.addDataPoint(metric);
 
-        Map<Long, Double> result = tsStorage.readMetrics(Granularity.SECONDS,
-                metric.datapoint().timestamp() - 10000,
-                metric.datapoint().timestamp() + 1000,
+        List<Metric> result = tsStorage.readMetrics(Granularity.SECONDS,
+                Optional.of(metric.datapoint().timestamp() - 10000),
+                Optional.of(metric.datapoint().timestamp() + 1000),
                 metric.name(),
                 metric.labels());
 
-        Assertions.assertNotNull(result.get(TimestampRounder.upToSeconds(metric.datapoint().timestamp())));
-        Assertions.assertEquals(metric.datapoint().value(), result.get(TimestampRounder.upToSeconds(metric.datapoint().timestamp())));
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty());
+        Assertions.assertEquals(1, result.size());
+        Metric expectedMetric = new Metric(
+                metric.name(),
+                metric.labels(),
+                new DataPoint(metric.datapoint().value(),
+                        TimestampRounder.upToSeconds(metric.datapoint().timestamp()))
+        );
+        Assertions.assertEquals(expectedMetric, result.get(0));
     }
 
     @Test
@@ -59,14 +67,22 @@ public class TsStorageTest {
         tsStorage.addDataPoint(metric);
 
         List<Label> labelsToSearch = List.of(new Label("labelName2", "value2"));
-        Map<Long, Double> result = tsStorage.readMetrics(Granularity.SECONDS,
-                metric.datapoint().timestamp() - 10000,
-                metric.datapoint().timestamp() + 1000,
+        List<Metric> result = tsStorage.readMetrics(Granularity.SECONDS,
+                Optional.of(metric.datapoint().timestamp() - 10000),
+                Optional.of(metric.datapoint().timestamp() + 1000),
                 metric.name(),
                 labelsToSearch);
 
-        Assertions.assertNotNull(result.get(TimestampRounder.upToSeconds(metric.datapoint().timestamp())));
-        Assertions.assertEquals(metric.datapoint().value(), result.get(TimestampRounder.upToSeconds(metric.datapoint().timestamp())));
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty());
+        Assertions.assertEquals(1, result.size());
+        Metric expectedMetric = new Metric(
+                metric.name(),
+                metric.labels(),
+                new DataPoint(metric.datapoint().value(),
+                        TimestampRounder.upToSeconds(metric.datapoint().timestamp()))
+        );
+        Assertions.assertEquals(expectedMetric, result.get(0));
     }
 
     @Test
@@ -90,14 +106,22 @@ public class TsStorageTest {
                 dataPoint2));
 
         List<Label> labelsToSearch = List.of(new Label("labelName2", "value2"));
-        Map<Long, Double> result = tsStorage.readMetrics(Granularity.SECONDS,
-                dataPoint2.timestamp() - 100000,
-                dataPoint2.timestamp() + 100000,
+        List<Metric> result = tsStorage.readMetrics(Granularity.SECONDS,
+                Optional.of(dataPoint2.timestamp() - 10000),
+                Optional.of(dataPoint2.timestamp() + 1000),
                 metricName,
                 labelsToSearch);
 
-        Assertions.assertNotNull(result.get(TimestampRounder.upToSeconds(dataPoint2.timestamp())));
-        Assertions.assertEquals(dataPoint2.value(), result.get(TimestampRounder.upToSeconds(dataPoint2.timestamp())));
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty());
+        Assertions.assertEquals(1, result.size());
+        Metric expectedMetric = new Metric(
+                metricName,
+                labels,
+                new DataPoint(dataPoint2.value(),
+                        TimestampRounder.upToSeconds(dataPoint2.timestamp()))
+        );
+        Assertions.assertEquals(expectedMetric, result.get(0));
     }
 
     @Test
@@ -113,13 +137,21 @@ public class TsStorageTest {
         tsStorage.addDataPoint(metric);
         tsStorage.addDataPoint(metric1);
 
-        Map<Long, Double> result = tsStorage.readMetrics(Granularity.SECONDS,
-                metric.datapoint().timestamp() - 10000,
-                metric.datapoint().timestamp() + 1000,
+        List<Metric> result = tsStorage.readMetrics(Granularity.SECONDS,
+                Optional.of(metric.datapoint().timestamp() - 10000),
+                Optional.of(metric.datapoint().timestamp() + 1000),
                 metric.name(),
                 metric.labels());
 
-        Assertions.assertNotNull(result.get(TimestampRounder.upToSeconds(metric.datapoint().timestamp())));
-        Assertions.assertEquals(metric.datapoint().value(), result.get(TimestampRounder.upToSeconds(metric.datapoint().timestamp())));
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty());
+        Assertions.assertEquals(1, result.size());
+        Metric expectedMetric = new Metric(
+                metric.name(),
+                metric.labels(),
+                new DataPoint(metric.datapoint().value(),
+                        TimestampRounder.upToSeconds(metric.datapoint().timestamp()))
+        );
+        Assertions.assertEquals(expectedMetric, result.get(0));
     }
 }

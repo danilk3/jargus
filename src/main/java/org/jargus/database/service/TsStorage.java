@@ -1,9 +1,11 @@
 package org.jargus.database.service;
 
 import com.google.common.collect.Sets;
+import org.jargus.common.model.DataPoint;
 import org.jargus.common.model.Label;
 import org.jargus.common.model.Metric;
 import org.jargus.database.models.Granularity;
+import org.jargus.database.models.MetricLabelsValueEntry;
 import org.jargus.database.models.MetricTable;
 
 import java.time.Duration;
@@ -28,12 +30,12 @@ public class TsStorage {
         this.metricHoursTtl = metricHoursTtl;
     }
 
-    public Map<Long, Double> readMetrics(Granularity granularity,
-                                         long fromTime,
-                                         long toTime,
+    public List<Metric> readMetrics(Granularity granularity,
+                                         Optional<Long> fromTime,
+                                         Optional<Long> toTime,
                                          String metricName,
                                          List<Label> labels) {
-        Map<Long, Double> result = new TreeMap<>();
+        Map<Long, MetricLabelsValueEntry> resultMap = new TreeMap<>();
         Set<Integer> metricTablesToSearch = new TreeSet<>();
         for (Label label : labels) {
             // todo: уйти от hashCode()
@@ -48,10 +50,15 @@ public class TsStorage {
 
         for (Integer metricTableKey : metricTablesToSearch) {
             MetricTable metricTable = metrics.computeIfAbsent(metricTableKey, key -> new MetricTable());
-            result.putAll(metricTable.readDataPoints(granularity, fromTime, toTime));
+            resultMap.putAll(metricTable.readDataPoints(granularity, fromTime, toTime));
         }
 
-        return result;
+        return resultMap.entrySet().stream()
+                .map(entry -> new Metric(
+                        metricName,
+                        entry.getValue().labels(),
+                        new DataPoint(entry.getValue().value(), entry.getKey()))
+                ).toList();
     }
 
     public void addDataPoint(Metric metric) {
@@ -64,7 +71,7 @@ public class TsStorage {
         // todo: уйти от hashCode()
         int metricTableKey = metricTableKeyString.toString().hashCode();
         MetricTable metricTable = metrics.computeIfAbsent(metricTableKey, key -> new MetricTable());
-        metricTable.addDataPoint(metric.datapoint());
+        metricTable.addDataPoint(metric.datapoint(), metric.labels());
 
         for (Label label : metric.labels()) {
             // todo: уйти от hashCode()
