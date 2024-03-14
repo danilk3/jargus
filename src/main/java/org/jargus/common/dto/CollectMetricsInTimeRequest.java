@@ -3,11 +3,9 @@ package org.jargus.common.dto;
 /**
  * @author Bazhov N.S.
  */
-public class CollectMetricsInTimeRequest {
-
-    private final String metricName;
+public class CollectMetricsInTimeRequest extends CollectMetricsRequest{
 
     public CollectMetricsInTimeRequest(String metricName) {
-        this.metricName = metricName;
+        super(metricName);
     }
 }
