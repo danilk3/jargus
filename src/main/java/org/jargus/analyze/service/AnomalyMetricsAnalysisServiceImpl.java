@@ -1,10 +1,11 @@
 package org.jargus.analyze.service;
 
 import lombok.RequiredArgsConstructor;
-import org.jargus.alert.client.AlertSystemClient;
-import org.jargus.collect.model.RawMetric;
 import org.jargus.analyze.storage.MetricsAnalysisRuleValidator;
+import org.jargus.common.model.Metric;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author Bazhov N.S.
@@ -16,7 +17,7 @@ public class AnomalyMetricsAnalysisServiceImpl implements AnomalyMetricsAnalysis
 //    private final AlertSystemClient alertSystemClient;
 
     @Override
-    public void analyzeMetrics(RawMetric rawMetric) {
+    public void analyzeMetrics(List<Metric> metric) {
 //        if (metricsAnalysisRuleValidator.matches(rawMetric)){
 //            alertSystemClient.alert(rawMetric);
 //        }

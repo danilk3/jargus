@@ -1,7 +1,7 @@
 package org.jargus.analyze.storage;
 
 import lombok.RequiredArgsConstructor;
-import org.jargus.collect.model.RawMetric;
+import org.jargus.common.model.Metric;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,7 +13,7 @@ public class MetricsAnalysisRuleValidatorImpl implements MetricsAnalysisRuleVali
     private final MetricsAnalysisRuleStorage metricsAnalysisRuleStorage;
     
     @Override
-    public boolean matches(RawMetric rawMetric) {
+    public boolean matches(Metric metric) {
         return false;
     }
 }

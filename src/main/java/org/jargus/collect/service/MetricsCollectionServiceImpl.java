@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.jargus.collect.client.CollectMetricsClient;
 import org.jargus.collect.mapper.MetricMapper;
 import org.jargus.collect.model.ExportMetricRequestParams;
-import org.jargus.collect.model.RawMetric;
+import org.jargus.common.model.Metric;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,18 +16,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MetricsCollectionServiceImpl implements MetricsCollectionService {
     private final CollectMetricsClient collectMetricsClient;
+    private final MetricMapper metricMapper;
 
     @Override
-    public RawMetric exportMetrics(ExportMetricRequestParams exportMetricRequestParams) {
-        List<String> metrics = collectMetricsClient.export(exportMetricRequestParams);
-        List<RawMetric> rawMetrics = new ArrayList<>();
+    public List<Metric> exportMetrics(ExportMetricRequestParams exportMetricRequestParams) {
 
-        MetricMapper metricMapper = new MetricMapper();
-
-        for (String metric :
-                metrics) {
-            rawMetrics.add(metricMapper.map(metric));
-        }
-        return null;
+        List<String> rawBody = collectMetricsClient.export(exportMetricRequestParams.getUri());
+        return metricMapper.map(rawBody);
     }
 }

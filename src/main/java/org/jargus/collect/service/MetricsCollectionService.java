@@ -1,11 +1,13 @@
 package org.jargus.collect.service;
 
 import org.jargus.collect.model.ExportMetricRequestParams;
-import org.jargus.collect.model.RawMetric;
+import org.jargus.common.model.Metric;
+
+import java.util.List;
 
 /**
  * @author Bazhov N.S.
  */
 public interface MetricsCollectionService {
-    RawMetric exportMetrics(ExportMetricRequestParams exportMetricRequestParams);
+    List<Metric> exportMetrics(ExportMetricRequestParams exportMetricRequestParams);
 }
