@@ -26,4 +26,9 @@ public class InternalDatabaseServiceImpl implements InternalDatabaseService {
                 databaseMetricRequestParams.getMetricName(),
                 databaseMetricRequestParams.getLabels());
     }
+
+    @Override
+    public void addMetrics(List<Metric> metrics) {
+        tsStorageClient.addDataPoint(metrics);
+    }
 }

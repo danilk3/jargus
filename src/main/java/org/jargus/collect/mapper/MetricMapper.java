@@ -5,6 +5,7 @@ import org.jargus.common.model.Label;
 import org.jargus.common.model.Metric;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,8 @@ public class MetricMapper {
                 if (containsLabels(rawMetric)) {
                     metrics.add(convertToMetricWithLabels(rawMetric));
                 } else {
-                    metrics.add(convertToMetricWithoutLabels(rawMetric));
+//                    TODO: сделать поддержку метрик без лейблов
+//                    metrics.add(convertToMetricWithoutLabels(rawMetric));
                 }
             }
         }
@@ -34,6 +36,9 @@ public class MetricMapper {
     private boolean isComment(String line) {
         return line.startsWith("#");
     }
+
+    //    <name>{<label_name>="<value>",<label_name>="<value>",...,} <value>
+    //    <name> <value>
 
     private Metric convertToMetricWithoutLabels(String rawMetric) {
         String rawName = rawMetric.substring(0, rawMetric.indexOf(" "));
@@ -64,10 +69,6 @@ public class MetricMapper {
                 .build();
     }
 
-
-//    <name>{<label_name>="<value>",<label_name>="<value>",...,} <value>
-//    <name> <value>
-
     private boolean containsLabels(String line) {
         return line.contains(",} ");
     }
@@ -90,6 +91,6 @@ public class MetricMapper {
     }
 
     private DataPoint mapMetricDataPoint(String rawValue) {
-        return new DataPoint(Double.parseDouble(rawValue), 1);
+        return new DataPoint(Double.parseDouble(rawValue), Instant.now().toEpochMilli());
     }
 }

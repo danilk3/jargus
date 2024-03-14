@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface InternalDatabaseService {
     List<Metric> getMetrics(DatabaseMetricRequestParams databaseMetricRequestParams);
+    void addMetrics(List<Metric> metrics);
 }
