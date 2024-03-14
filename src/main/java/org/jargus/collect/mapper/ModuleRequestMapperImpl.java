@@ -17,6 +17,7 @@ public class ModuleRequestMapperImpl implements ModuleRequestMapper {
 
     @Override
     public ExportMetricRequestParams mapExportMetricRequestParams(CollectMetricsRequest request) {
+//        TODO: встоить механизм определения uri
         return new ExportMetricRequestParams(request.getMetricName(), "http://localhost:8081/actuator/prometheus");
     }
 }

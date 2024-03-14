@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Component
 public class MetricMapper {
+//    TODO: сделать интерфейсик наверное?
     public List<Metric> map(List<String> rawMetrics) {
 
         // TODO: add mapping of labelless metrics
