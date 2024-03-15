@@ -17,9 +17,9 @@ public class AnomalyMetricsAnalysisServiceImpl implements AnomalyMetricsAnalysis
 //    private final AlertSystemClient alertSystemClient;
 
     @Override
-    public void analyzeMetrics(List<Metric> metric) {
-//        if (metricsAnalysisRuleValidator.matches(rawMetric)){
-//            alertSystemClient.alert(rawMetric);
-//        }
+    public void analyzeMetrics(List<Metric> metrics) {
+        for (Metric metric: metrics) {
+            metricsAnalysisRuleValidator.matches(metric);
+        }
     }
 }

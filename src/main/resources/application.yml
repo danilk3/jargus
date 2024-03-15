@@ -1,3 +1,16 @@
+global:
+  fetch:
+    interval: PT1S
+
+fetches:
+  - taskName: task1
+    target: http://localhost:8081
+    path: /actuator/prometheus
+
+  - taskName: task2
+    target: http://localhost:8082
+    path: /actuator/prometheus
+
 tsdb:
   cleanUpFixedDelay: PT1M
   metricSecondsTtl: P30D

@@ -2,6 +2,7 @@ package org.jargus.collect.mapper;
 
 import org.jargus.collect.model.DatabaseMetricRequestParams;
 import org.jargus.collect.model.ExportMetricRequestParams;
+import org.jargus.common.dto.CollectMetricsInTimeRequest;
 import org.jargus.common.dto.CollectMetricsRequest;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ public class ModuleRequestMapperImpl implements ModuleRequestMapper {
 
     @Override
     public ExportMetricRequestParams mapExportMetricRequestParams(CollectMetricsRequest request) {
-//        TODO: встоить механизм определения uri
-        return new ExportMetricRequestParams(request.getMetricName(), "http://localhost:8081/actuator/prometheus");
+//        TODO: настроить имена метрик
+        return new ExportMetricRequestParams("name", ((CollectMetricsInTimeRequest) request).getUri());
     }
 }
