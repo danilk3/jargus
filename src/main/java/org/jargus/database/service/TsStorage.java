@@ -37,15 +37,20 @@ public class TsStorage {
                                          List<Label> labels) {
         Map<Long, MetricLabelsValueEntry> resultMap = new TreeMap<>();
         Set<Integer> metricTablesToSearch = new TreeSet<>();
-        for (Label label : labels) {
-            // todo: уйти от hashCode()
-            int labelOccurrenceKey = (metricName + label.name() + label.value()).hashCode();
-            if (metricTablesToSearch.isEmpty()) {
-                metricTablesToSearch = labelOccurrencesMap.getOrDefault(labelOccurrenceKey, Set.of());
-                continue;
+
+        if (labels.isEmpty()) {
+            metricTablesToSearch = labelOccurrencesMap.getOrDefault(metricName.hashCode(), Set.of());
+        } else {
+            for (Label label : labels) {
+                // todo: уйти от hashCode()
+                int labelOccurrenceKey = (metricName + label.name() + label.value()).hashCode();
+                if (metricTablesToSearch.isEmpty()) {
+                    metricTablesToSearch = labelOccurrencesMap.getOrDefault(labelOccurrenceKey, Set.of());
+                    continue;
+                }
+                metricTablesToSearch = Sets.intersection(metricTablesToSearch,
+                        labelOccurrencesMap.getOrDefault(labelOccurrenceKey, Set.of()));
             }
-            metricTablesToSearch = Sets.intersection(metricTablesToSearch,
-                    labelOccurrencesMap.getOrDefault(labelOccurrenceKey, Set.of()));
         }
 
         for (Integer metricTableKey : metricTablesToSearch) {
@@ -80,6 +85,11 @@ public class TsStorage {
                     .computeIfAbsent(labelOccurrenceKey, key -> new TreeSet<>());
             labelOccurrences.add(metricTableKey);
         }
+
+        // todo: уйти от hashCode()
+        Set<Integer> labelOccurrences = labelOccurrencesMap
+                .computeIfAbsent(metric.name().hashCode(), key -> new TreeSet<>());
+        labelOccurrences.add(metricTableKey);
     }
 
     public void cleanUpMetrics() {

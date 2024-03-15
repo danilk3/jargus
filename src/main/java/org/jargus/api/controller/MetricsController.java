@@ -6,7 +6,6 @@ import org.jargus.common.dto.CollectMetricsFromInternalDatabaseRequest;
 import org.jargus.common.dto.CollectMetricsInTimeRequest;
 import org.jargus.common.dto.CollectMetricsRequest;
 import org.jargus.common.model.Metric;
-import org.jargus.database.dao.TsStorageClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +20,10 @@ public class MetricsController {
     private final MetricsRequestController metricsRequestController;
 
     // todo: продумать выбор режима чтения
+    // request в лист засунуть, чтобы несколько метрик можно было бы читать
     @PostMapping("metrics-db")
-    public List<Metric> getMetrics(@RequestBody CollectMetricsFromInternalDatabaseRequest request) {
-        return metricsRequestController.exportMetricsFromInternalDatabase(request);
+    public List<Metric> getMetrics(@RequestBody List<CollectMetricsFromInternalDatabaseRequest> requests) {
+        return metricsRequestController.exportMetricsFromInternalDatabase(requests);
     }
 
     // todo: temp

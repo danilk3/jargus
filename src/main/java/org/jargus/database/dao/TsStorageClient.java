@@ -17,8 +17,8 @@ public interface TsStorageClient {
     void addDataPoint(List<Metric> metrics);
 
     List<Metric> readMetrics(Granularity granularity,
-                                  Optional<Long> fromTime,
-                                  Optional<Long> toTime,
-                                  String metricName,
-                                  List<Label> labels);
+                             Optional<Long> fromTime,
+                             Optional<Long> toTime,
+                             String metricName,
+                             List<Label> labels);
 }

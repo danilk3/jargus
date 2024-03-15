@@ -1,7 +1,6 @@
 package org.jargus.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 import lombok.Getter;
 import org.jargus.common.model.Label;
 import org.jargus.database.models.Granularity;
@@ -14,7 +13,7 @@ import java.util.Optional;
  * @author Bazhov N.S.
  */
 @Getter
-public class CollectMetricsFromInternalDatabaseRequest extends CollectMetricsRequest{
+public class CollectMetricsFromInternalDatabaseRequest extends CollectMetricsRequest {
 
     private final Optional<Date> fromTime;
 
@@ -28,11 +27,11 @@ public class CollectMetricsFromInternalDatabaseRequest extends CollectMetricsReq
                                                      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") Optional<Date> fromTime,
                                                      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") Optional<Date> toTime,
                                                      Optional<Granularity> granularity,
-                                                     List<Label> labels) {
+                                                     Optional<List<Label>> labels) {
         super(metricName);
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.granularity = granularity.orElse(Granularity.SECONDS);
-        this.labels = labels;
+        this.labels = labels.orElse(List.of());
     }
 }
