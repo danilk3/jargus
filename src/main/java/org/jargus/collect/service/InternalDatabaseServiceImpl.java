@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Bazhov N.S.
@@ -24,6 +25,7 @@ public class InternalDatabaseServiceImpl implements InternalDatabaseService {
         databaseMetricRequestsParams
                 .forEach(requestParams ->
                         result.addAll(tsStorageClient.readMetrics(
+                                Optional.empty(),
                                 requestParams.getGranularity(),
                                 requestParams.getFromTime().map(Date::getTime),
                                 requestParams.getToTime().map(Date::getTime),
@@ -35,6 +37,6 @@ public class InternalDatabaseServiceImpl implements InternalDatabaseService {
 
     @Override
     public void addMetrics(List<Metric> metrics) {
-        tsStorageClient.addDataPoint(metrics);
+        tsStorageClient.addDataPoints("fetchName", metrics);
     }
 }

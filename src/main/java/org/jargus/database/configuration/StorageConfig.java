@@ -9,8 +9,7 @@ import java.time.Duration;
  */
 @Validated
 @ConfigurationProperties(prefix = "tsdb", ignoreUnknownFields = false)
-public record StorageConfig(Duration cleanUpFixedDelay,
-                            Duration metricSecondsTtl,
+public record StorageConfig(Duration metricSecondsTtl,
                             Duration metricMinutesTtl,
                             Duration metricHoursTtl) {
 }
