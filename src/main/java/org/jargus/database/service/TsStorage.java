@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import org.jargus.common.model.DataPoint;
 import org.jargus.common.model.Label;
 import org.jargus.common.model.Metric;
+import org.jargus.database.configuration.StorageConfig;
 import org.jargus.database.models.Granularity;
 import org.jargus.database.models.MetricLabelsValueEntry;
 import org.jargus.database.models.MetricTable;
@@ -24,10 +25,10 @@ public class TsStorage {
     private final Duration metricMinutesTtl;
     private final Duration metricHoursTtl;
 
-    public TsStorage(Duration metricSecondsTtl, Duration metricMinutesTtl, Duration metricHoursTtl) {
-        this.metricSecondsTtl = metricSecondsTtl;
-        this.metricMinutesTtl = metricMinutesTtl;
-        this.metricHoursTtl = metricHoursTtl;
+    public TsStorage(StorageConfig storageConfig) {
+        this.metricSecondsTtl = storageConfig.metricSecondsTtl();
+        this.metricMinutesTtl = storageConfig.metricMinutesTtl();
+        this.metricHoursTtl = storageConfig.metricHoursTtl();
     }
 
     public List<Metric> readMetrics(Granularity granularity,
@@ -90,6 +91,7 @@ public class TsStorage {
         Set<Integer> labelOccurrences = labelOccurrencesMap
                 .computeIfAbsent(metric.name().hashCode(), key -> new TreeSet<>());
         labelOccurrences.add(metricTableKey);
+        cleanUpMetrics();
     }
 
     public void cleanUpMetrics() {

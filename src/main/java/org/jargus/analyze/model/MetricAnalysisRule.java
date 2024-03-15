@@ -3,5 +3,9 @@ package org.jargus.analyze.model;
 /**
  * @author Bazhov N.S.
  */
-public interface MetricAnalysisRule {
+public class MetricAnalysisRule {
+    String name;
+    RuleCondition ruleCondition;
+    Flags flags;
+    String annotation;
 }

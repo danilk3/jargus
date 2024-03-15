@@ -8,5 +8,5 @@ import java.util.List;
  * @author Bazhov N.S.
  */
 public interface AnomalyMetricsAnalysisService {
-    void analyzeMetrics(List<Metric> metric);
+    void analyzeMetrics(List<Metric> metrics);
 }

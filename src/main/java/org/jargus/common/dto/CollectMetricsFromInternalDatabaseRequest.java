@@ -28,7 +28,7 @@ public class CollectMetricsFromInternalDatabaseRequest extends CollectMetricsReq
                                                      @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") Optional<Date> toTime,
                                                      Optional<Granularity> granularity,
                                                      Optional<List<Label>> labels) {
-        super(metricName);
+        super(metricName, "");
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.granularity = granularity.orElse(Granularity.SECONDS);

@@ -9,9 +9,9 @@ tbd
 ## How to use
 
 global: # Global settings
-fetch: # Collect metrics from  target
-interval: 1m # Schedule interval of collection
-timeout: 10s # Maximum timeout of target
+    fetch: # Collect metrics from  target
+        interval: 1m # Schedule interval of collection
+        timeout: 10s # Maximum timeout of target
 
 external_labels: # Labels to add to each metrics after collection from target
 label_name1: labelValueA # Labels to add
@@ -24,12 +24,12 @@ metric_minutes_ttl: 30d # Time to live metrics with minutes interval
 metric_hours_ttl: 30d # Time to live metrics with hours interval
 
 rules: # Rules to analyze metrics
-- name: name # Name of rule
-condition: condition # Condition to metric
-labels:
-- label_value1 # Label to add to alert message (do not link with labels of metrics)
-- label_value2
-annotation: annotation # Description add to messages
+    - name: name # Name of rule
+      condition: condition # Condition to metric 
+      flags:
+        - flag_value1 # Label to add to alert message (do not link with labels of metrics)
+        - flag_value2
+      annotation: annotation # Description add to messages
 
     - name: name
       condition: condition

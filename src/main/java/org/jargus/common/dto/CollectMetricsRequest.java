@@ -10,8 +10,10 @@ import lombok.Getter;
 public abstract class CollectMetricsRequest {
 
     private String metricName;
+    private String fetchName;
 
-    public CollectMetricsRequest(String metricName) {
+    public CollectMetricsRequest(String metricName, String fetchName) {
         this.metricName = metricName;
+        this.fetchName = fetchName;
     }
 }
