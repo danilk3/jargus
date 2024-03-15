@@ -99,26 +99,26 @@ public class MetricTable {
                         long hoursDateTill) {
         long secondsKey = TimestampRounder.upToSeconds(secondsDateTill);
         for (Long key : countSeconds.keySet()) {
-            countSeconds.remove(key);
             if (key >= secondsKey) {
                 break;
             }
+            countSeconds.remove(key);
         }
 
         long minutesKey = TimestampRounder.upToMinutes(minutesDateTill);
         for (Long key : countMinutes.keySet()) {
-            countMinutes.remove(key);
             if (key >= minutesKey) {
                 break;
             }
+            countMinutes.remove(key);
         }
 
         long hoursKey = TimestampRounder.upToHours(hoursDateTill);
         for (Long key : countHours.keySet()) {
-            countHours.remove(key);
             if (key >= hoursKey) {
                 break;
             }
+            countHours.remove(key);
         }
     }
 }

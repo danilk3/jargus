@@ -17,7 +17,6 @@ public class MetricMapper {
 //    TODO: сделать интерфейсик наверное?
     public List<Metric> map(List<String> rawMetrics) {
 
-        // TODO: add mapping of labelless metrics
         List<Metric> metrics = new ArrayList<>();
 
         for (String rawMetric : rawMetrics) {
@@ -25,8 +24,7 @@ public class MetricMapper {
                 if (containsLabels(rawMetric)) {
                     metrics.add(convertToMetricWithLabels(rawMetric));
                 } else {
-//                    TODO: сделать поддержку метрик без лейблов
-//                    metrics.add(convertToMetricWithoutLabels(rawMetric));
+                    metrics.add(convertToMetricWithoutLabels(rawMetric));
                 }
             }
         }
@@ -51,6 +49,7 @@ public class MetricMapper {
         return Metric.builder()
                 .name(name)
                 .datapoint(dataPoint)
+                .labels(List.of())
                 .build();
     }
 

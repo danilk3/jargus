@@ -35,27 +35,26 @@ public class MetricsRequestControllerImpl implements MetricsRequestController {
         anomalyMetricsAnalysisService.analyzeMetrics(metrics);
 
 //      TODO: нужно ли добавлять в базу при интайме?
-//        internalDatabaseService.addMetrics(metrics);
+        internalDatabaseService.addMetrics(metrics);
 
         return metrics;
     }
 
     @Override
-    public List<Metric> exportMetricsFromInternalDatabase(CollectMetricsRequest request) {
+    public List<Metric> exportMetricsFromInternalDatabase(List<CollectMetricsFromInternalDatabaseRequest> requests) {
 
 //        TODO: сделать маппер
-        CollectMetricsFromInternalDatabaseRequest databaseRequest = (CollectMetricsFromInternalDatabaseRequest) request;
-        DatabaseMetricRequestParams databaseMetricRequestParams = DatabaseMetricRequestParams.builder()
-                .metricName(databaseRequest.getMetricName())
-                .fromTime(databaseRequest.getFromTime())
-                .toTime(databaseRequest.getToTime())
-                .granularity(databaseRequest.getGranularity())
-                .labels(databaseRequest.getLabels())
-                .build();
+        List<DatabaseMetricRequestParams> databaseMetricRequestsParams = requests
+                .stream()
+                .map(request -> DatabaseMetricRequestParams.builder()
+                        .metricName(request.getMetricName())
+                        .fromTime(request.getFromTime())
+                        .toTime(request.getToTime())
+                        .granularity(request.getGranularity())
+                        .labels(request.getLabels())
+                        .build())
+                .toList();
 
-        List<Metric> metrics = internalDatabaseService.getMetrics(databaseMetricRequestParams);
-        anomalyMetricsAnalysisService.analyzeMetrics(metrics);
-
-        return metrics;
+        return internalDatabaseService.getMetrics(databaseMetricRequestsParams);
     }
 }
