@@ -12,7 +12,6 @@ fetches:
     path: /actuator/prometheus
 
 tsdb:
-  cleanUpFixedDelay: PT1M
   metricSecondsTtl: P30D
   metricMinutesTtl: P30D
   metricHoursTtl: P30D
