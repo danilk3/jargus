@@ -17,5 +17,6 @@ import java.util.List;
 @ConfigurationProperties
 @Component
 public class FetchProperties {
-    private List<Fetch> fetches;
+//    private List<Fetch> fetches;
+    private Fetch fetches;
 }

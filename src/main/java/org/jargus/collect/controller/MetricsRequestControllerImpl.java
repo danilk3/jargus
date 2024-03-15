@@ -35,7 +35,7 @@ public class MetricsRequestControllerImpl implements MetricsRequestController {
         anomalyMetricsAnalysisService.analyzeMetrics(metrics);
 
 //      TODO: нужно ли добавлять в базу при интайме?
-        internalDatabaseService.addMetrics(metrics);
+        internalDatabaseService.addMetrics(metrics, request.getFetchName());
 
         return metrics;
     }

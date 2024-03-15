@@ -9,8 +9,8 @@ import lombok.Getter;
 public class CollectMetricsInTimeRequest extends CollectMetricsRequest{
     private String uri;
 
-    public CollectMetricsInTimeRequest(String metricName, String uri) {
-        super(metricName);
+    public CollectMetricsInTimeRequest(String metricName, String fetchName, String uri) {
+        super(metricName, fetchName);
         this.uri = uri;
     }
 }

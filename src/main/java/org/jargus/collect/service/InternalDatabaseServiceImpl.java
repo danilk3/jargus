@@ -36,7 +36,7 @@ public class InternalDatabaseServiceImpl implements InternalDatabaseService {
     }
 
     @Override
-    public void addMetrics(List<Metric> metrics) {
-        tsStorageClient.addDataPoints("fetchName", metrics);
+    public void addMetrics(List<Metric> metrics, String fetchName) {
+        tsStorageClient.addDataPoints(fetchName, metrics);
     }
 }
