@@ -32,10 +32,10 @@ public class TsStorage {
     }
 
     public List<Metric> readMetrics(Granularity granularity,
-                                         Optional<Long> fromTime,
-                                         Optional<Long> toTime,
-                                         String metricName,
-                                         List<Label> labels) {
+                                    Optional<Long> fromTime,
+                                    Optional<Long> toTime,
+                                    String metricName,
+                                    List<Label> labels) {
         Map<Long, MetricLabelsValueEntry> resultMap = new TreeMap<>();
         Set<Integer> metricTablesToSearch = new TreeSet<>();
 
@@ -55,7 +55,7 @@ public class TsStorage {
         }
 
         for (Integer metricTableKey : metricTablesToSearch) {
-            MetricTable metricTable = metrics.computeIfAbsent(metricTableKey, key -> new MetricTable());
+            MetricTable metricTable = metrics.computeIfAbsent(metricTableKey, key -> new MetricTable(metricName));
             resultMap.putAll(metricTable.readDataPoints(granularity, fromTime, toTime));
         }
 
@@ -67,6 +67,22 @@ public class TsStorage {
                 ).toList();
     }
 
+    public List<Metric> readAll() {
+        List<Metric> result = new ArrayList<>();
+        for (MetricTable metricTable : metrics.values()) {
+            Map<Long, MetricLabelsValueEntry> metricsList = metricTable.readDataPoints(Granularity.SECONDS, Optional.empty(), Optional.empty());
+            result.addAll(
+                    metricsList.entrySet().stream()
+                            .map(entry ->
+                                    new Metric(metricTable.getMetricName(),
+                                            entry.getValue().labels(),
+                                            new DataPoint(entry.getValue().value(), entry.getKey())))
+                            .toList()
+            );
+        }
+        return result;
+    }
+
     public void addDataPoint(Metric metric) {
         StringBuilder metricTableKeyString = new StringBuilder(metric.name());
 
@@ -76,7 +92,7 @@ public class TsStorage {
 
         // todo: уйти от hashCode()
         int metricTableKey = metricTableKeyString.toString().hashCode();
-        MetricTable metricTable = metrics.computeIfAbsent(metricTableKey, key -> new MetricTable());
+        MetricTable metricTable = metrics.computeIfAbsent(metricTableKey, key -> new MetricTable(metric.name()));
         metricTable.addDataPoint(metric.datapoint(), metric.labels());
 
         for (Label label : metric.labels()) {

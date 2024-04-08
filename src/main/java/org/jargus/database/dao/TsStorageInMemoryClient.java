@@ -1,9 +1,8 @@
 package org.jargus.database.dao;
 
-import org.jargus.common.model.Label;
+import org.jargus.common.dto.MetricRequest;
 import org.jargus.common.model.Metric;
 import org.jargus.database.configuration.StorageConfig;
-import org.jargus.database.models.Granularity;
 import org.jargus.database.service.TsStorage;
 
 import java.util.*;
@@ -34,30 +33,54 @@ public class TsStorageInMemoryClient implements TsStorageClient {
 
     @Override
     public List<Metric> readMetrics(Optional<String> fetchName,
-                                    Granularity granularity,
-                                    Optional<Long> fromTime,
-                                    Optional<Long> toTime,
-                                    String metricName,
-                                    List<Label> labels) {
+                                    List<MetricRequest> metricRequests) {
         if (fetchName.isEmpty()) {
-            List<Metric> result = new ArrayList<>();
-            tsStorageMap.values().forEach(storage ->
-                    result.addAll(storage.readMetrics(
-                            granularity,
-                            fromTime,
-                            toTime,
-                            metricName,
-                            labels)
-                    )
-            );
+            return readFromAllFetches(metricRequests);
+        }
+        TsStorage tsStorageEntry = tsStorageMap.computeIfAbsent(fetchName.get(), key -> new TsStorage(storageConfig));
+
+        if (metricRequests.isEmpty()) {
+            return tsStorageEntry.readAll();
+        }
+
+        List<Metric> result = new ArrayList<>();
+        metricRequests.forEach(
+                metricRequest -> {
+                    result.addAll(
+                            tsStorageEntry.readMetrics(
+                                    metricRequest.getGranularity(),
+                                    metricRequest.getFromTime(),
+                                    metricRequest.getToTime(),
+                                    metricRequest.getMetricName(),
+                                    metricRequest.getLabels()
+                            )
+                    );
+                }
+        );
+
+        return result;
+    }
+
+    private List<Metric> readFromAllFetches(List<MetricRequest> metricRequests) {
+        List<Metric> result = new ArrayList<>();
+        if (metricRequests.isEmpty()) {
+            tsStorageMap.values().forEach(storage -> result.addAll(storage.readAll()));
             return result;
         }
-        return tsStorageMap.computeIfAbsent(fetchName.get(), key -> new TsStorage(storageConfig))
-                .readMetrics(
-                        granularity,
-                        fromTime,
-                        toTime,
-                        metricName,
-                        labels);
+
+        for (Map.Entry<String, TsStorage> tsStorageEntry : tsStorageMap.entrySet()) {
+            metricRequests.forEach(
+                    metricRequest -> result.addAll(
+                            tsStorageEntry.getValue().readMetrics(
+                                    metricRequest.getGranularity(),
+                                    metricRequest.getFromTime(),
+                                    metricRequest.getToTime(),
+                                    metricRequest.getMetricName(),
+                                    metricRequest.getLabels()
+                            )
+                    )
+            );
+        }
+        return result;
     }
 }

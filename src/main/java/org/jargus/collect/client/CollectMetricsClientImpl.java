@@ -1,13 +1,10 @@
 package org.jargus.collect.client;
 
-import org.jargus.collect.model.ExportMetricRequestParams;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
