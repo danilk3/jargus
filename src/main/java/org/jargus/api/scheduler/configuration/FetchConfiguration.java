@@ -1,16 +1,4 @@
-package org.jargus.api.scheduler;
-
-import org.jargus.api.controller.MetricsController;
-import org.jargus.api.scheduler.model.Fetch;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.config.Scope;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import java.util.HashMap;
-import java.util.List;
+package org.jargus.api.scheduler.configuration;
 
 /**
  * @author Bazhov N.S.

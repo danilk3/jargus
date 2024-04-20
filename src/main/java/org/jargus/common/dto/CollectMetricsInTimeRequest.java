@@ -6,11 +6,9 @@ import lombok.Getter;
  * @author Bazhov N.S.
  */
 @Getter
-public class CollectMetricsInTimeRequest extends CollectMetricsRequest{
-    private String uri;
+public class CollectMetricsInTimeRequest extends CollectMetricsRequest {
 
     public CollectMetricsInTimeRequest(String metricName, String fetchName, String uri) {
         super(metricName, fetchName);
-        this.uri = uri;
     }
 }

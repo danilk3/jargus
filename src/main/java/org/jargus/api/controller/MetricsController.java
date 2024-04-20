@@ -5,6 +5,7 @@ import org.jargus.api.scheduler.FetchManager;
 import org.jargus.collect.service.MetricsRequestService;
 import org.jargus.configuration.mapper.ConfigMapper;
 import org.jargus.configuration.model.AppConfig;
+import org.jargus.collect.manager.MetricsCollectionManager;
 import org.jargus.common.dto.CollectMetricsFromInternalDatabaseRequest;
 import org.jargus.common.dto.CollectMetricsInTimeRequest;
 import org.jargus.common.dto.CollectMetricsRequest;
@@ -40,16 +41,16 @@ public class MetricsController {
     public void createConfig(@RequestBody AppConfig newConfig) {
 
     }
+    private final MetricsCollectionManager metricsCollectionManager;
 
     @GetMapping("metrics-db")
     public List<Metric> getMetrics(@RequestBody CollectMetricsFromInternalDatabaseRequest request) {
-        return metricsRequestService.exportMetricsFromInternalDatabase(request);
+        return metricsCollectionManager.exportMetricsFromInternalDatabase(request);
     }
 
     @GetMapping("metrics-in-time")
     public List<Metric> getMetrics(@RequestParam String fetchName) {
-
         CollectMetricsRequest collectMetricsRequest = new CollectMetricsInTimeRequest("", fetchName, fetchManager.getUri(fetchName));
-        return metricsRequestService.exportMetricsFromSidecar(collectMetricsRequest);
+        return metricsCollectionManager.exportMetricsFromSidecar(collectMetricsRequest);
     }
 }

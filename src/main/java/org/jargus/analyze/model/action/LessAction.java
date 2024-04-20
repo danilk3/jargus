@@ -3,9 +3,13 @@ package org.jargus.analyze.model.action;
 /**
  * @author Bazhov N.S.
  */
-public class LessAction implements Action {
+public class LessAction extends Action {
+    protected LessAction(double actionValue) {
+        super(actionValue);
+    }
+
     @Override
-    public boolean doAction(double leftValue, double rightValue) {
-        return leftValue < rightValue;
+    public boolean doAction(double leftValue) {
+        return leftValue < actionValue;
     }
 }
