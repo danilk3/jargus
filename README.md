@@ -47,12 +47,12 @@ fetch_config: # Config to fetching targets
   target: uri
 
   request:
-  headers:
-  header1: valueA
-  header2: valueB
-  params:
-  param_name1: param_valueA
-  param_name2: param_valueB
+    headers:
+        header1: valueA
+        header2: valueB
+    params:
+        param_name1: param_valueA
+        param_name2: param_valueB
 
   rules:
     - name: name

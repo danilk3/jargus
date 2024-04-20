@@ -1,9 +1,10 @@
-package org.jargus.collect.service;
+package org.jargus.collect.manager;
 
 import lombok.RequiredArgsConstructor;
 import org.jargus.analyze.service.AnomalyMetricsAnalysisService;
 import org.jargus.collect.mapper.ModuleRequestMapper;
 import org.jargus.collect.model.ExportMetricRequestParams;
+import org.jargus.collect.service.MetricsCollectionService;
 import org.jargus.common.dto.CollectMetricsFromInternalDatabaseRequest;
 import org.jargus.common.dto.CollectMetricsRequest;
 import org.jargus.common.model.Metric;
@@ -15,9 +16,9 @@ import java.util.List;
 /**
  * @author Bazhov N.S.
  */
-@Component
 @RequiredArgsConstructor
-public class MetricsRequestServiceImpl implements MetricsRequestService {
+@Component
+public class MetricsCollectionManagerImpl implements MetricsCollectionManager {
     private final MetricsCollectionService metricsCollectionService;
     private final AnomalyMetricsAnalysisService anomalyMetricsAnalysisService;
     private final TsStorageClient tsStorageClient;

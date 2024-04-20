@@ -1,4 +1,4 @@
-package org.jargus.collect.service;
+package org.jargus.collect.manager;
 
 import org.jargus.common.dto.CollectMetricsFromInternalDatabaseRequest;
 import org.jargus.common.dto.CollectMetricsRequest;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Bazhov N.S.
  */
-public interface MetricsRequestService {
+public interface MetricsCollectionManager {
     List<Metric> exportMetricsFromSidecar(CollectMetricsRequest request);
     List<Metric> exportMetricsFromInternalDatabase(CollectMetricsFromInternalDatabaseRequest request);
 }

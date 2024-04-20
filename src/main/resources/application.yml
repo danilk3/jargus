@@ -7,6 +7,15 @@ fetches:
   target: http://localhost:8081
   path: /actuator/prometheus
 
+rule:
+  name: system_cpu_usage
+  condition: "moreThan 0"
+  label: info
+  message: "cpu alarm!!!"
+  annotation:
+    target: http://localhost:8082
+    path: /
+
 tsdb:
   metricSecondsTtl: P30D
   metricMinutesTtl: P30D
