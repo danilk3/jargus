@@ -1,8 +1,7 @@
 package org.jargus.database.dao;
 
-import org.jargus.common.model.Label;
+import org.jargus.common.dto.MetricRequest;
 import org.jargus.common.model.Metric;
-import org.jargus.database.models.Granularity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,10 +17,5 @@ public interface TsStorageClient {
 
     void addDataPoints(String fetchName, List<Metric> metrics);
 
-    List<Metric> readMetrics(Optional<String> fetchName,
-                             Granularity granularity,
-                             Optional<Long> fromTime,
-                             Optional<Long> toTime,
-                             String metricName,
-                             List<Label> labels);
+    List<Metric> readMetrics(Optional<String> fetchName, List<MetricRequest> metricRequests);
 }

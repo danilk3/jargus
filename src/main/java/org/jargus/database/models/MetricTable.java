@@ -12,6 +12,12 @@ import java.util.*;
  */
 public class MetricTable {
 
+    private final String metricName;
+
+    public MetricTable(String metricName) {
+        this.metricName = metricName;
+    }
+
     private final SortedMap<Long, MetricLabelsValueEntry> countSeconds = new TreeMap<>();
     private final SortedMap<Long, MetricLabelsValueEntry> countMinutes = new TreeMap<>();
     private final SortedMap<Long, MetricLabelsValueEntry> countHours = new TreeMap<>();
@@ -120,5 +126,9 @@ public class MetricTable {
             }
             countHours.remove(key);
         }
+    }
+
+    public String getMetricName() {
+        return metricName;
     }
 }

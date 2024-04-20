@@ -1,15 +1,13 @@
-package org.jargus.collect.controller;
+package org.jargus.collect.service;
 
 import lombok.RequiredArgsConstructor;
 import org.jargus.analyze.service.AnomalyMetricsAnalysisService;
 import org.jargus.collect.mapper.ModuleRequestMapper;
-import org.jargus.collect.model.DatabaseMetricRequestParams;
 import org.jargus.collect.model.ExportMetricRequestParams;
-import org.jargus.collect.service.InternalDatabaseService;
-import org.jargus.collect.service.MetricsCollectionService;
 import org.jargus.common.dto.CollectMetricsFromInternalDatabaseRequest;
 import org.jargus.common.dto.CollectMetricsRequest;
 import org.jargus.common.model.Metric;
+import org.jargus.database.dao.TsStorageClient;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,10 +17,10 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-public class MetricsRequestControllerImpl implements MetricsRequestController {
+public class MetricsRequestServiceImpl implements MetricsRequestService {
     private final MetricsCollectionService metricsCollectionService;
     private final AnomalyMetricsAnalysisService anomalyMetricsAnalysisService;
-    private final InternalDatabaseService internalDatabaseService;
+    private final TsStorageClient tsStorageClient;
 
     private final ModuleRequestMapper moduleRequestMapper;
 
@@ -35,26 +33,13 @@ public class MetricsRequestControllerImpl implements MetricsRequestController {
         anomalyMetricsAnalysisService.analyzeMetrics(metrics);
 
 //      TODO: нужно ли добавлять в базу при интайме?
-        internalDatabaseService.addMetrics(metrics, request.getFetchName());
+        tsStorageClient.addDataPoints(request.getFetchName(), metrics);
 
         return metrics;
     }
 
     @Override
-    public List<Metric> exportMetricsFromInternalDatabase(List<CollectMetricsFromInternalDatabaseRequest> requests) {
-
-//        TODO: сделать маппер
-        List<DatabaseMetricRequestParams> databaseMetricRequestsParams = requests
-                .stream()
-                .map(request -> DatabaseMetricRequestParams.builder()
-                        .metricName(request.getMetricName())
-                        .fromTime(request.getFromTime())
-                        .toTime(request.getToTime())
-                        .granularity(request.getGranularity())
-                        .labels(request.getLabels())
-                        .build())
-                .toList();
-
-        return internalDatabaseService.getMetrics(databaseMetricRequestsParams);
+    public List<Metric> exportMetricsFromInternalDatabase(CollectMetricsFromInternalDatabaseRequest request) {
+        return tsStorageClient.readMetrics(request.getFetchName(), request.getMetricRequests());
     }
 }

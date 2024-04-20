@@ -2,7 +2,6 @@ package org.jargus.api.scheduler;
 
 import org.jargus.api.controller.MetricsController;
 import org.jargus.api.scheduler.model.Fetch;
-import org.jargus.collect.controller.MetricsRequestController;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.Scope;
 import org.springframework.context.ApplicationContext;
