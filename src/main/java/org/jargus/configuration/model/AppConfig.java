@@ -7,6 +7,7 @@ import org.jargus.configuration.Default;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.bind.ConstructorBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,6 +24,9 @@ public class AppConfig {
 
     @ConstructorBinding
     public AppConfig(GlobalConfig globalConfig, List<TaskConfig> tasksConfig, AlertingConfig alertingConfig) {
+        if (tasksConfig == null) {
+            tasksConfig = new ArrayList<>();
+        }
         tasksConfig.forEach(taskConfig -> taskConfig.addGlobalConfigs(globalConfig));
         this.tasksConfig = tasksConfig;
         this.alertingConfig = alertingConfig;
