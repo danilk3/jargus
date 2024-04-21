@@ -1,13 +1,33 @@
-global:
-  fetch:
+global_config:
+  tsdb_config: # Settings to database
+    metric_seconds_ttl: P30D # Time to live metrics with second interval
+    metric_minutes_ttl: P30D # Time to live metrics with minutes interval
+    metric_hours_ttl: P30D # Time to live metrics with hours interval
+  fetch_config:
     interval: PT10S
+    timeout: 123
+  requests_config:
+    headers:
+      Accept: application/json
+      Connection: keep-alive
+    params:
+      param_name1: param_value1
+  notification_rules_config:
+    - name: heap size overflow
+      condition: some_condition
+      flags:
+        - flag1
+        - flag2
+      annotation: hello from jargus
 
-fetches:
-  taskName: task1
-  target: http://localhost:8081
-  path: /actuator/prometheus
 
-tsdb:
-  metricSecondsTtl: P30D
-  metricMinutesTtl: P30D
-  metricHoursTtl: P30D
+tasks_config:
+  - task_name: task1
+    target: http://localhost:8081
+    path: /actuator/prometheus
+
+alerting_config:
+  host: localhost
+  path: /alert
+  timeout: 123
+
