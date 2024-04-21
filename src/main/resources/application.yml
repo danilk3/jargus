@@ -31,7 +31,7 @@ tasks_config:
     path: /actuator/prometheus
 
 alerting_config:
-  host: localhost
-  path: /alert
+  host: http://localhost:8081
+  path: /
   timeout: 123
 

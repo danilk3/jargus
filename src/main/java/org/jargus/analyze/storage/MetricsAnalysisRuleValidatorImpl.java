@@ -20,7 +20,7 @@ public class MetricsAnalysisRuleValidatorImpl implements MetricsAnalysisRuleVali
     @Override
     public Event matches(Metric metric, TaskRequestModel taskRequestModel) {
 
-        MetricAnalysisRule metricAnalysisRule = ruleRepository.getRuleByName(taskRequestModel.getTaskName(), "testrule");
+        MetricAnalysisRule metricAnalysisRule = ruleRepository.getRuleByName(taskRequestModel.getTaskName(), "system_cpu_usage");
         if (metric.name().equals(metricAnalysisRule.getName())){
             return Event.builder()
                     .url(metricAnalysisRule.getAnnotation())
