@@ -1,7 +1,7 @@
 package org.jargus.common.dto;
 
 import lombok.Getter;
-import org.jargus.scheduler.domain.TaskModel;
+import org.jargus.scheduler.domain.TaskRequestModel;
 
 /**
  * @author Bazhov N.S.
@@ -9,7 +9,7 @@ import org.jargus.scheduler.domain.TaskModel;
 @Getter
 public class CollectMetricsInTimeRequest extends CollectMetricsRequest {
 
-    public CollectMetricsInTimeRequest(TaskModel fetchName) {
+    public CollectMetricsInTimeRequest(TaskRequestModel fetchName) {
         super(fetchName);
     }
 }

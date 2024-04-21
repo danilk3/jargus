@@ -3,7 +3,7 @@ package org.jargus.scheduler;
 import lombok.RequiredArgsConstructor;
 import org.jargus.collect.manager.MetricsCollectionManager;
 import org.jargus.common.dto.CollectMetricsInTimeRequest;
-import org.jargus.scheduler.domain.TaskModel;
+import org.jargus.scheduler.domain.TaskRequestModel;
 import org.jargus.scheduler.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +20,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void invokeTasks() {
-        Collection<TaskModel> tasks = taskRepository.getAllTasks();
-        for (TaskModel taskModel : tasks) {
-            CollectMetricsInTimeRequest request = new CollectMetricsInTimeRequest(taskModel);
+        Collection<TaskRequestModel> tasks = taskRepository.getAllTasks();
+        for (TaskRequestModel taskRequestModel : tasks) {
+            CollectMetricsInTimeRequest request = new CollectMetricsInTimeRequest(taskRequestModel);
             Thread thread = new Thread(() -> metricsCollectionManager.exportMetricsFromSidecar(request));
             thread.start();
         }

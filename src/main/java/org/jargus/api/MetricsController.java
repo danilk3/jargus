@@ -6,9 +6,8 @@ import org.jargus.configuration.model.AppConfig;
 import org.jargus.collect.manager.MetricsCollectionManager;
 import org.jargus.common.dto.CollectMetricsFromInternalDatabaseRequest;
 import org.jargus.common.dto.CollectMetricsInTimeRequest;
-import org.jargus.common.dto.CollectMetricsRequest;
 import org.jargus.common.model.Metric;
-import org.jargus.scheduler.domain.TaskModel;
+import org.jargus.scheduler.domain.TaskRequestModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class MetricsController {
 
     @GetMapping("metrics-in-time")
     public List<Metric> getMetrics(@RequestParam String taskName) {
-        CollectMetricsInTimeRequest collectMetricsRequest = new CollectMetricsInTimeRequest(new TaskModel());
+        CollectMetricsInTimeRequest collectMetricsRequest = new CollectMetricsInTimeRequest(new TaskRequestModel());
         return metricsCollectionManager.exportMetricsFromSidecar(collectMetricsRequest);
     }
 }

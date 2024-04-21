@@ -1,40 +1,37 @@
 package org.jargus.scheduler.repository;
 
-import org.jargus.scheduler.domain.TaskModel;
+import lombok.RequiredArgsConstructor;
+import org.jargus.configuration.model.AppConfig;
+import org.jargus.configuration.model.TaskConfig;
+import org.jargus.scheduler.domain.TaskRequestModel;
+import org.jargus.scheduler.mapper.TaskMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Bazhov N.S.
  */
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @Component
 public class TaskRepositoryImpl implements TaskRepository {
+    private final AppConfig appConfig;
+    private final TaskMapper taskMapper;
 
-    TaskModel t1;
-    TaskModel t2;
-
-    private final Map<String, TaskModel> tasks;
-
-    public TaskRepositoryImpl() {
-        t1 = new TaskModel();
-        t1.setUri("http://localhost:8081/actuator/prometheus");
-
-        t2 = new TaskModel();
-        t2.setUri("http://localhost:8082/actuator/prometheus");
-
-        tasks = Map.of("t1", t1, "t2", t2);
+    @Override
+    public TaskRequestModel getTaskModel(String taskName) {
+        Optional<TaskConfig> taskConfig = appConfig.getTasksConfig().stream().filter(x -> x.getTaskName().equals(taskName)).findFirst();
+        if (taskConfig.isPresent()){
+            return taskMapper.mapTaskConfigToTaskModel(taskConfig.get());
+        } else {
+            throw new IllegalArgumentException("Unknown task name");
+        }
     }
 
     @Override
-    public TaskModel getFetchModel(String taskName) {
-        return tasks.get(taskName);
-    }
-
-    @Override
-    public Collection<TaskModel> getAllTasks() {
-        return tasks.values();
+    public Collection<TaskRequestModel> getAllTasks() {
+        return appConfig.getTasksConfig().stream().map(taskMapper::mapTaskConfigToTaskModel).collect(Collectors.toList());
     }
 }

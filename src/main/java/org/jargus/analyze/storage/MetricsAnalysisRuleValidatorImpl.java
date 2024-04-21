@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.jargus.alert.model.Event;
 import org.jargus.alert.model.Message;
 import org.jargus.analyze.model.MetricAnalysisRule;
+import org.jargus.analyze.repository.RuleRepository;
 import org.jargus.common.model.Metric;
+import org.jargus.scheduler.domain.TaskRequestModel;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,12 +15,12 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class MetricsAnalysisRuleValidatorImpl implements MetricsAnalysisRuleValidator {
-    private final MetricsAnalysisRuleStorage metricsAnalysisRuleStorage;
+    private final RuleRepository ruleRepository;
     
     @Override
-    public Event matches(Metric metric) {
+    public Event matches(Metric metric, TaskRequestModel taskRequestModel) {
 
-        MetricAnalysisRule metricAnalysisRule = metricsAnalysisRuleStorage.getRule();
+        MetricAnalysisRule metricAnalysisRule = ruleRepository.getRuleByName(taskRequestModel.getTaskName(), "testrule");
         if (metric.name().equals(metricAnalysisRule.getName())){
             return Event.builder()
                     .url(metricAnalysisRule.getAnnotation())

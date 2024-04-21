@@ -7,7 +7,6 @@ import org.jargus.collect.model.ExportMetricRequestParams;
 import org.jargus.collect.service.MetricsCollectionService;
 import org.jargus.common.dto.CollectMetricsFromInternalDatabaseRequest;
 import org.jargus.common.dto.CollectMetricsInTimeRequest;
-import org.jargus.common.dto.CollectMetricsRequest;
 import org.jargus.common.model.Metric;
 import org.jargus.database.dao.TsStorageClient;
 import org.springframework.stereotype.Component;
@@ -21,7 +20,7 @@ import java.util.List;
 @Component
 public class MetricsCollectionManagerImpl implements MetricsCollectionManager {
     private final MetricsCollectionService metricsCollectionService;
-//    private final AnomalyMetricsAnalysisService anomalyMetricsAnalysisService;
+    private final AnomalyMetricsAnalysisService anomalyMetricsAnalysisService;
     private final TsStorageClient tsStorageClient;
 
     private final ModuleRequestMapper moduleRequestMapper;
@@ -32,10 +31,10 @@ public class MetricsCollectionManagerImpl implements MetricsCollectionManager {
         ExportMetricRequestParams exportMetricRequestParams = moduleRequestMapper.mapExportMetricRequestParams(request);
 
         List<Metric> metrics = metricsCollectionService.exportMetrics(exportMetricRequestParams);
-//        anomalyMetricsAnalysisService.analyzeMetrics(metrics);
+        anomalyMetricsAnalysisService.analyzeMetrics(metrics, request.getTaskRequestModel());
 
 //      TODO: нужно ли добавлять в базу при интайме?
-        tsStorageClient.addDataPoints(request.getTaskModel().getTaskName(), metrics);
+        tsStorageClient.addDataPoints(request.getTaskRequestModel().getTaskName(), metrics);
 
         return metrics;
     }

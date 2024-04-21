@@ -10,7 +10,7 @@ import java.util.List;
  */
 @AllArgsConstructor
 @Getter
-public class NotificationRule {
+public class NotificationRuleConfig {
     private String name;
     private String condition;
     private List<String> flags;

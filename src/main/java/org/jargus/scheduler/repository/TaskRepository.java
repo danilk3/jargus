@@ -1,6 +1,6 @@
 package org.jargus.scheduler.repository;
 
-import org.jargus.scheduler.domain.TaskModel;
+import org.jargus.scheduler.domain.TaskRequestModel;
 
 import java.util.Collection;
 
@@ -8,6 +8,6 @@ import java.util.Collection;
  * @author Bazhov N.S.
  */
 public interface TaskRepository {
-    TaskModel getFetchModel(String taskName);
-    Collection<TaskModel> getAllTasks();
+    TaskRequestModel getTaskModel(String taskName);
+    Collection<TaskRequestModel> getAllTasks();
 }

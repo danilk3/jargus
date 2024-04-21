@@ -43,20 +43,20 @@ public interface ConfigMapper {
         requestsConfig.getParams().putAll(newRequestsConfig.getParams());
     }
 
-    default void updateNotificationRulesConfigs(List<NotificationRule> newNotificationRules, @MappingTarget List<NotificationRule> notificationRules) {
-        newNotificationRules.forEach(newRule -> {
-            Optional<NotificationRule> existedRule = notificationRules.stream()
+    default void updateNotificationRulesConfigs(List<NotificationRuleConfig> newNotificationRuleConfigs, @MappingTarget List<NotificationRuleConfig> notificationRuleConfigs) {
+        newNotificationRuleConfigs.forEach(newRule -> {
+            Optional<NotificationRuleConfig> existedRule = notificationRuleConfigs.stream()
                     .filter(config -> config.getName().equals(newRule.getName()))
                     .findFirst();
             if (existedRule.isPresent()) {
                 updateNotificationRule(newRule, existedRule.get());
             } else {
-                notificationRules.add(newRule);
+                notificationRuleConfigs.add(newRule);
             }
         });
     }
 
-    void updateNotificationRule(NotificationRule newNotificationRule, @MappingTarget NotificationRule notificationRule);
+    void updateNotificationRule(NotificationRuleConfig newNotificationRuleConfig, @MappingTarget NotificationRuleConfig notificationRuleConfig);
 
     void updateAlertingConfig(AlertingConfig newAlertingConfig, @MappingTarget AlertingConfig alertingConfig);
 }
