@@ -2,22 +2,18 @@ package org.jargus.database.dao;
 
 import org.jargus.common.dto.MetricRequest;
 import org.jargus.common.model.Metric;
-import org.jargus.database.configuration.StorageConfig;
 import org.jargus.database.service.TsStorage;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 /**
  * @author Kotelnikov D.M.
  */
+@Component
 public class TsStorageInMemoryClient implements TsStorageClient {
 
     private final Map<String, TsStorage> tsStorageMap = new HashMap<>();
-    private final StorageConfig storageConfig;
-
-    public TsStorageInMemoryClient(StorageConfig storageConfig) {
-        this.storageConfig = storageConfig;
-    }
 
 
     @Override

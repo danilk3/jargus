@@ -3,7 +3,6 @@ package org.jargus.database.service;
 import org.jargus.common.model.DataPoint;
 import org.jargus.common.model.Label;
 import org.jargus.common.model.Metric;
-import org.jargus.database.configuration.StorageConfig;
 import org.jargus.database.models.Granularity;
 import org.jargus.database.utils.TimestampRounder;
 import org.junit.jupiter.api.Assertions;

@@ -1,7 +1,6 @@
 package org.jargus;
 
 import org.jargus.configuration.model.AppConfig;
-import org.jargus.database.configuration.StorageConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -14,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @EnableFeignClients
-@EnableConfigurationProperties({StorageConfig.class, AppConfig.class})
+@EnableConfigurationProperties(AppConfig.class)
 public class JargusMetricsApplication {
     public static void main(String[] args) {
         SpringApplication.run(JargusMetricsApplication.class);
