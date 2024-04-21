@@ -13,8 +13,8 @@ global_config:
     params:
       param_name1: param_value1
   notification_rules_config:
-    - name: heap size overflow
-      condition: some_condition
+    - name: system_cpu_usage
+      condition: "moreThan 0"
       flags:
         - flag1
         - flag2
@@ -26,8 +26,12 @@ tasks_config:
     target: http://localhost:8081
     path: /actuator/prometheus
 
+  - task_name: task2
+    target: http://localhost:8082
+    path: /actuator/prometheus
+
 alerting_config:
-  host: localhost
-  path: /alert
+  host: http://localhost:8081
+  path: /
   timeout: 123
 

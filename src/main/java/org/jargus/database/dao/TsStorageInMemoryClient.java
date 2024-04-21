@@ -3,6 +3,7 @@ package org.jargus.database.dao;
 import org.jargus.common.dto.MetricRequest;
 import org.jargus.common.model.Metric;
 import org.jargus.database.service.TsStorage;
+import org.jargus.scheduler.repository.TaskRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -14,11 +15,16 @@ import java.util.*;
 public class TsStorageInMemoryClient implements TsStorageClient {
 
     private final Map<String, TsStorage> tsStorageMap = new HashMap<>();
+    private final TaskRepository taskRepository;
+
+    public TsStorageInMemoryClient(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
 
 
     @Override
     public void addDataPoint(String fetchName, Metric metric) {
-        tsStorageMap.computeIfAbsent(fetchName, key -> new TsStorage(storageConfig))
+        tsStorageMap.computeIfAbsent(fetchName, key -> new TsStorage(taskRepository.getTsDbConfig(fetchName)))
                 .addDataPoint(metric);
     }
 
@@ -33,7 +39,8 @@ public class TsStorageInMemoryClient implements TsStorageClient {
         if (fetchName.isEmpty()) {
             return readFromAllFetches(metricRequests);
         }
-        TsStorage tsStorageEntry = tsStorageMap.computeIfAbsent(fetchName.get(), key -> new TsStorage(storageConfig));
+        TsStorage tsStorageEntry = tsStorageMap.computeIfAbsent(fetchName.get(), key ->
+                new TsStorage(taskRepository.getTsDbConfig(fetchName.get())));
 
         if (metricRequests.isEmpty()) {
             return tsStorageEntry.readAll();
