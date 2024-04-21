@@ -19,6 +19,6 @@ public class ModuleRequestMapperImpl implements ModuleRequestMapper {
     @Override
     public ExportMetricRequestParams mapExportMetricRequestParams(CollectMetricsRequest request) {
 //        TODO: настроить имена метрик
-        return new ExportMetricRequestParams("name", ((CollectMetricsInTimeRequest) request).getUri());
+        return new ExportMetricRequestParams("name", request.getTaskModel().getUri());
     }
 }

@@ -1,4 +1,4 @@
-package org.jargus.api.scheduler.configuration;
+package org.jargus.scheduler.configuration;
 
 /**
  * @author Bazhov N.S.

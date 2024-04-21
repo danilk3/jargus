@@ -2,18 +2,16 @@ package org.jargus.common.dto;
 
 
 import lombok.Getter;
+import org.jargus.scheduler.domain.TaskModel;
 
 /**
  * @author Bazhov N.S.
  */
 @Getter
 public abstract class CollectMetricsRequest {
+    private final TaskModel taskModel;
 
-    private String metricName;
-    private String fetchName;
-
-    public CollectMetricsRequest(String metricName, String fetchName) {
-        this.metricName = metricName;
-        this.fetchName = fetchName;
+    public CollectMetricsRequest(TaskModel taskModel) {
+        this.taskModel = taskModel;
     }
 }
