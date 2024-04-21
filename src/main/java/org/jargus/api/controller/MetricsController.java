@@ -3,11 +3,11 @@ package org.jargus.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.jargus.api.scheduler.FetchManager;
 import org.jargus.collect.service.MetricsRequestService;
+import org.jargus.common.configuration.AppConfig;
 import org.jargus.common.dto.CollectMetricsFromInternalDatabaseRequest;
 import org.jargus.common.dto.CollectMetricsInTimeRequest;
 import org.jargus.common.dto.CollectMetricsRequest;
 import org.jargus.common.model.Metric;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +22,11 @@ public class MetricsController {
     private final MetricsRequestService metricsRequestService;
 
     private final FetchManager fetchManager;
-    private final ApplicationContext context;
+    private final AppConfig appConfig;
+
+    @GetMapping("update-config")
+    public void updateConfig() {
+    }
 
     @GetMapping("metrics-db")
     public List<Metric> getMetrics(@RequestBody CollectMetricsFromInternalDatabaseRequest request) {
