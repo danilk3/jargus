@@ -34,13 +34,13 @@ public class MetricsCollectionManagerImpl implements MetricsCollectionManager {
         anomalyMetricsAnalysisService.analyzeMetrics(metrics);
 
 //      TODO: нужно ли добавлять в базу при интайме?
-        tsStorageClient.addDataPoints(request.getFetchName(), metrics);
+        tsStorageClient.addDataPoints(request.getTaskModel().getTaskName(), metrics);
 
         return metrics;
     }
 
     @Override
     public List<Metric> exportMetricsFromInternalDatabase(CollectMetricsFromInternalDatabaseRequest request) {
-        return tsStorageClient.readMetrics(request.getFetchName(), request.getMetricRequests());
+        return tsStorageClient.readMetrics(request.getTaskName(), request.getMetricRequests());
     }
 }

@@ -1,10 +1,7 @@
-package org.jargus.api.scheduler;
+package org.jargus.scheduler;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jargus.api.scheduler.properties.FetchProperties;
-import org.jargus.collect.manager.MetricsCollectionManagerImpl;
-import org.jargus.common.dto.CollectMetricsInTimeRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -14,11 +11,11 @@ import org.springframework.stereotype.Component;
 @Getter
 @Component
 @RequiredArgsConstructor
-public class FetchScheduler {
-    private final FetchService fetchService;
+public class MetricsCollectionTaskScheduler {
+    private final TaskService taskService;
 
     @Scheduled(fixedDelayString = "${global.fetch.interval:PT1S}")
     public void collect(){
-        fetchService.initiateFetch();
+        taskService.invokeTasks();
     }
 }

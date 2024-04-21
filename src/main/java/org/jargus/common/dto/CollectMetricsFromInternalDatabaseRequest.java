@@ -11,12 +11,12 @@ import java.util.Optional;
 @Getter
 public class CollectMetricsFromInternalDatabaseRequest {
 
-    private final Optional<String> fetchName;
+    private final Optional<String> taskName;
     private final List<MetricRequest> metricRequests;
 
-    public CollectMetricsFromInternalDatabaseRequest(Optional<String> fetchName,
+    public CollectMetricsFromInternalDatabaseRequest(Optional<String> taskName,
                                                      List<MetricRequest> metricRequests) {
-        this.fetchName = fetchName;
+        this.taskName = taskName;
         this.metricRequests = metricRequests == null ? List.of() : metricRequests;
     }
 }
