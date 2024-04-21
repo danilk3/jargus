@@ -20,26 +20,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/jargus/api")
 public class MetricsController {
+
     private final MetricsRequestService metricsRequestService;
-
     private final FetchManager fetchManager;
-    private final AppConfig appConfig;
-    private final ConfigMapper configMapper;
-
-    @PutMapping("update-config")
-    public void updateConfig(@RequestBody AppConfig newConfig) {
-        configMapper.updateAppConfig(newConfig, appConfig);
-    }
-
-    @DeleteMapping("delete-config")
-    public void deleteConfig(@RequestBody AppConfig newConfig) {
-
-    }
-
-    @PostMapping("create-config")
-    public void createConfig(@RequestBody AppConfig newConfig) {
-
-    }
 
     @GetMapping("metrics-db")
     public List<Metric> getMetrics(@RequestBody CollectMetricsFromInternalDatabaseRequest request) {
