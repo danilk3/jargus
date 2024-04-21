@@ -1,8 +1,6 @@
 package org.jargus.api;
 
 import lombok.RequiredArgsConstructor;
-import org.jargus.api.scheduler.FetchManager;
-import org.jargus.collect.service.MetricsRequestService;
 import org.jargus.configuration.mapper.ConfigMapper;
 import org.jargus.configuration.model.AppConfig;
 import org.jargus.collect.manager.MetricsCollectionManager;
@@ -22,9 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/jargus/api")
 public class MetricsController {
-    private final MetricsRequestService metricsRequestService;
-
-    private final FetchManager fetchManager;
+    private final MetricsCollectionManager metricsCollectionManager;
     private final AppConfig appConfig;
     private final ConfigMapper configMapper;
 
@@ -42,7 +38,6 @@ public class MetricsController {
     public void createConfig(@RequestBody AppConfig newConfig) {
 
     }
-    private final MetricsCollectionManager metricsCollectionManager;
 
     @GetMapping("metrics-db")
     public List<Metric> getMetrics(@RequestBody CollectMetricsFromInternalDatabaseRequest request) {
@@ -51,7 +46,7 @@ public class MetricsController {
 
     @GetMapping("metrics-in-time")
     public List<Metric> getMetrics(@RequestParam String taskName) {
-        CollectMetricsRequest collectMetricsRequest = new CollectMetricsInTimeRequest(new TaskModel());
+        CollectMetricsInTimeRequest collectMetricsRequest = new CollectMetricsInTimeRequest(new TaskModel());
         return metricsCollectionManager.exportMetricsFromSidecar(collectMetricsRequest);
     }
 }
