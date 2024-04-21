@@ -1,4 +1,4 @@
-package org.jargus.common.configuration;
+package org.jargus.configuration.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

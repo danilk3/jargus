@@ -1,6 +1,6 @@
 package org.jargus;
 
-import org.jargus.common.configuration.AppConfig;
+import org.jargus.configuration.model.AppConfig;
 import org.jargus.database.configuration.StorageConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

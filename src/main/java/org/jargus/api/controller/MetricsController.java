@@ -3,7 +3,8 @@ package org.jargus.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.jargus.api.scheduler.FetchManager;
 import org.jargus.collect.service.MetricsRequestService;
-import org.jargus.common.configuration.AppConfig;
+import org.jargus.configuration.mapper.ConfigMapper;
+import org.jargus.configuration.model.AppConfig;
 import org.jargus.common.dto.CollectMetricsFromInternalDatabaseRequest;
 import org.jargus.common.dto.CollectMetricsInTimeRequest;
 import org.jargus.common.dto.CollectMetricsRequest;
@@ -23,9 +24,21 @@ public class MetricsController {
 
     private final FetchManager fetchManager;
     private final AppConfig appConfig;
+    private final ConfigMapper configMapper;
 
-    @GetMapping("update-config")
-    public void updateConfig() {
+    @PutMapping("update-config")
+    public void updateConfig(@RequestBody AppConfig newConfig) {
+        configMapper.updateAppConfig(newConfig, appConfig);
+    }
+
+    @DeleteMapping("delete-config")
+    public void deleteConfig(@RequestBody AppConfig newConfig) {
+
+    }
+
+    @PostMapping("create-config")
+    public void createConfig(@RequestBody AppConfig newConfig) {
+
     }
 
     @GetMapping("metrics-db")
