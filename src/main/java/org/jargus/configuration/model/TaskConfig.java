@@ -22,7 +22,7 @@ public class TaskConfig {
     private TsDbConfig tsDbConfig;
     private FetchConfig fetchConfig;
     private RequestsConfig requestsConfig;
-    private List<NotificationRule> notificationRulesConfig;
+    private List<NotificationRuleConfig> notificationRulesConfig;
 
     public void addGlobalConfigs(GlobalConfig globalConfig) {
         if (tsDbConfig == null) {

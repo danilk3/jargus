@@ -1,16 +1,15 @@
 package org.jargus.common.dto;
 
 import lombok.Getter;
+import org.jargus.scheduler.domain.TaskRequestModel;
 
 /**
  * @author Bazhov N.S.
  */
 @Getter
-public class CollectMetricsInTimeRequest extends CollectMetricsRequest{
-    private String uri;
+public class CollectMetricsInTimeRequest extends CollectMetricsRequest {
 
-    public CollectMetricsInTimeRequest(String metricName, String fetchName, String uri) {
-        super(metricName, fetchName);
-        this.uri = uri;
+    public CollectMetricsInTimeRequest(TaskRequestModel fetchName) {
+        super(fetchName);
     }
 }

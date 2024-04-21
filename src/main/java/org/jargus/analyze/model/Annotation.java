@@ -1,4 +1,4 @@
-package org.jargus.api.scheduler.model;
+package org.jargus.analyze.model;
 
 import lombok.Data;
 
@@ -6,8 +6,7 @@ import lombok.Data;
  * @author Bazhov N.S.
  */
 @Data
-public class Fetch {
-    String taskName;
+public class Annotation {
     String target;
     String path;
 }
