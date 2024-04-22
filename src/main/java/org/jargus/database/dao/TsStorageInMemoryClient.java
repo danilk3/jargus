@@ -23,13 +23,13 @@ public class TsStorageInMemoryClient implements TsStorageClient {
 
 
     @Override
-    public void addDataPoint(String fetchName, Metric metric) {
+    public synchronized void addDataPoint(String fetchName, Metric metric) {
         tsStorageMap.computeIfAbsent(fetchName, key -> new TsStorage(taskRepository.getTsDbConfig(fetchName)))
                 .addDataPoint(metric);
     }
 
     @Override
-    public void addDataPoints(String fetchName, List<Metric> metrics) {
+    public synchronized void addDataPoints(String fetchName, List<Metric> metrics) {
         metrics.forEach(metric -> addDataPoint(fetchName, metric));
     }
 
