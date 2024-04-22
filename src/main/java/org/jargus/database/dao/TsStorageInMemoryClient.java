@@ -2,32 +2,34 @@ package org.jargus.database.dao;
 
 import org.jargus.common.dto.MetricRequest;
 import org.jargus.common.model.Metric;
-import org.jargus.database.configuration.StorageConfig;
 import org.jargus.database.service.TsStorage;
+import org.jargus.scheduler.repository.TaskRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 /**
  * @author Kotelnikov D.M.
  */
+@Component
 public class TsStorageInMemoryClient implements TsStorageClient {
 
     private final Map<String, TsStorage> tsStorageMap = new HashMap<>();
-    private final StorageConfig storageConfig;
+    private final TaskRepository taskRepository;
 
-    public TsStorageInMemoryClient(StorageConfig storageConfig) {
-        this.storageConfig = storageConfig;
+    public TsStorageInMemoryClient(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
 
 
     @Override
-    public void addDataPoint(String fetchName, Metric metric) {
-        tsStorageMap.computeIfAbsent(fetchName, key -> new TsStorage(storageConfig))
+    public synchronized void addDataPoint(String fetchName, Metric metric) {
+        tsStorageMap.computeIfAbsent(fetchName, key -> new TsStorage(taskRepository.getTsDbConfig(fetchName)))
                 .addDataPoint(metric);
     }
 
     @Override
-    public void addDataPoints(String fetchName, List<Metric> metrics) {
+    public synchronized void addDataPoints(String fetchName, List<Metric> metrics) {
         metrics.forEach(metric -> addDataPoint(fetchName, metric));
     }
 
@@ -37,7 +39,8 @@ public class TsStorageInMemoryClient implements TsStorageClient {
         if (fetchName.isEmpty()) {
             return readFromAllFetches(metricRequests);
         }
-        TsStorage tsStorageEntry = tsStorageMap.computeIfAbsent(fetchName.get(), key -> new TsStorage(storageConfig));
+        TsStorage tsStorageEntry = tsStorageMap.computeIfAbsent(fetchName.get(), key ->
+                new TsStorage(taskRepository.getTsDbConfig(fetchName.get())));
 
         if (metricRequests.isEmpty()) {
             return tsStorageEntry.readAll();

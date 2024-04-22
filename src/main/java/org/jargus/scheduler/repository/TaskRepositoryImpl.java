@@ -3,6 +3,7 @@ package org.jargus.scheduler.repository;
 import lombok.RequiredArgsConstructor;
 import org.jargus.configuration.model.AppConfig;
 import org.jargus.configuration.model.TaskConfig;
+import org.jargus.configuration.model.TsDbConfig;
 import org.jargus.scheduler.domain.TaskRequestModel;
 import org.jargus.scheduler.mapper.TaskMapper;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,16 @@ public class TaskRepositoryImpl implements TaskRepository {
         Optional<TaskConfig> taskConfig = appConfig.getTasksConfig().stream().filter(x -> x.getTaskName().equals(taskName)).findFirst();
         if (taskConfig.isPresent()){
             return taskMapper.mapTaskConfigToTaskModel(taskConfig.get());
+        } else {
+            throw new IllegalArgumentException("Unknown task name");
+        }
+    }
+
+    @Override
+    public TsDbConfig getTsDbConfig(String taskName) {
+        Optional<TaskConfig> taskConfig = appConfig.getTasksConfig().stream().filter(x -> x.getTaskName().equals(taskName)).findFirst();
+        if (taskConfig.isPresent()){
+            return taskConfig.get().getTsDbConfig();
         } else {
             throw new IllegalArgumentException("Unknown task name");
         }

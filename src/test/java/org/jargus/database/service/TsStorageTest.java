@@ -3,7 +3,7 @@ package org.jargus.database.service;
 import org.jargus.common.model.DataPoint;
 import org.jargus.common.model.Label;
 import org.jargus.common.model.Metric;
-import org.jargus.database.configuration.StorageConfig;
+import org.jargus.configuration.model.TsDbConfig;
 import org.jargus.database.models.Granularity;
 import org.jargus.database.utils.TimestampRounder;
 import org.junit.jupiter.api.Assertions;
@@ -25,7 +25,7 @@ public class TsStorageTest {
 
     @BeforeEach
     public void init() {
-        tsStorage = new TsStorage(new StorageConfig(Duration.of(1, TimeUnit.DAYS.toChronoUnit()),
+        tsStorage = new TsStorage(new TsDbConfig(Duration.of(1, TimeUnit.DAYS.toChronoUnit()),
                 Duration.of(1, TimeUnit.DAYS.toChronoUnit()),
                 Duration.of(1, TimeUnit.DAYS.toChronoUnit())));
     }
