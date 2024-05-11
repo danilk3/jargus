@@ -33,9 +33,6 @@ public class MetricsCollectionManagerImpl implements MetricsCollectionManager {
         List<Metric> metrics = metricsCollectionService.exportMetrics(exportMetricRequestParams);
         anomalyMetricsAnalysisService.analyzeMetrics(metrics, request.getTaskRequestModel());
 
-//      TODO: нужно ли добавлять в базу при интайме?
-        tsStorageClient.addDataPoints(request.getTaskRequestModel().getTaskName(), metrics);
-
         return metrics;
     }
 
