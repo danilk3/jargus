@@ -27,7 +27,7 @@ public class TaskRepositoryImpl implements TaskRepository {
         if (taskConfig.isPresent()){
             return taskMapper.mapTaskConfigToTaskModel(taskConfig.get());
         } else {
-            throw new IllegalArgumentException("Unknown task name");
+            throw new IllegalArgumentException("Unknown task name: " + taskName);
         }
     }
 
@@ -37,7 +37,7 @@ public class TaskRepositoryImpl implements TaskRepository {
         if (taskConfig.isPresent()){
             return taskConfig.get().getTsDbConfig();
         } else {
-            throw new IllegalArgumentException("Unknown task name");
+            throw new IllegalArgumentException("Unknown task name: " + taskName);
         }
     }
 
