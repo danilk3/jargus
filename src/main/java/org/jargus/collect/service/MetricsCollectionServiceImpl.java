@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.jargus.collect.client.CollectMetricsClient;
 import org.jargus.collect.mapper.MetricMapper;
 import org.jargus.collect.model.ExportMetricRequestParams;
+import org.jargus.common.dto.prometheus.PrometheusMetricsResponseDataDto;
+import org.jargus.common.dto.prometheus.PrometheusResponseDto;
 import org.jargus.common.model.Metric;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,7 @@ public class MetricsCollectionServiceImpl implements MetricsCollectionService {
 
     @Override
     public List<Metric> exportMetrics(ExportMetricRequestParams exportMetricRequestParams) {
-
-        List<String> rawBody = collectMetricsClient.export(exportMetricRequestParams.getUri());
-        return metricMapper.map(rawBody);
+        List<PrometheusResponseDto<PrometheusMetricsResponseDataDto>> result = collectMetricsClient.export(exportMetricRequestParams.getUri());
+        return metricMapper.map(result);
     }
 }
