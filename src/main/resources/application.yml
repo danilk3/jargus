@@ -6,3 +6,32 @@ global_config:
   fetch_config:
     interval: PT10S
     timeout: 123
+  requests_config:
+    headers:
+      Accept: application/json
+      Connection: keep-alive
+    params:
+      param_name1: param_value1
+  notification_rules_config:
+    - name: system_cpu_usage
+      condition: "moreThan 0"
+      flags:
+        - flag1
+        - flag2
+      annotation: hello from jargus
+
+
+tasks_config:
+  - task_name: task1
+    target: http://localhost:8081
+    path: /actuator/prometheus
+
+#  - task_name: task2
+#    target: http://localhost:8082
+#    path: /actuator/prometheus
+
+alerting_config:
+  host: http://localhost:8081
+  path: /
+  timeout: 123
+

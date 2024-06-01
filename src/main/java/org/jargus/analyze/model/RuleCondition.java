@@ -2,6 +2,7 @@ package org.jargus.analyze.model;
 
 import org.jargus.analyze.model.action.Action;
 import org.jargus.analyze.model.action.GreaterAction;
+import org.jargus.analyze.model.action.LessAction;
 
 /**
  * @author Bazhov N.S.
@@ -11,12 +12,16 @@ public class RuleCondition {
 
     public RuleCondition(String condition){
 
-        String action = condition.split(" ")[0];
-        double value = Double.parseDouble(condition.split(" ")[1]);
+        char action = condition.charAt(0);
+        double value = Double.parseDouble(condition.substring(1));
 
         switch (action) {
-            case "moreThan":
+            case '>':
                 ruleAction = new GreaterAction(value);
+                break;
+            case '<':
+                ruleAction = new LessAction(value);
+                break;
         }
     }
 

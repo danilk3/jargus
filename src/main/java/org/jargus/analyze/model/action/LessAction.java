@@ -4,7 +4,7 @@ package org.jargus.analyze.model.action;
  * @author Bazhov N.S.
  */
 public class LessAction extends Action {
-    protected LessAction(double actionValue) {
+    public LessAction(double actionValue) {
         super(actionValue);
     }
 
