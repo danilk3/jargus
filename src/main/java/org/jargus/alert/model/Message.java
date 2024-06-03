@@ -1,6 +1,8 @@
 package org.jargus.alert.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
@@ -8,9 +10,12 @@ import java.util.List;
 /**
  * @author Bazhov N.S.
  */
-@Builder
-@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Message {
-    List<String> type;
-    String message;
+    public List<String> type;
+    public String message;
+
+
+
 }

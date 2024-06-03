@@ -16,20 +16,20 @@ global_config:
     - name: system_cpu_usage
       condition: ">0"
       flags:
-        - flag1
-        - flag2
-      annotation: hello from jargus
+        - "cpu usage"
+        - "alarm!!!!"
+      annotation: "This message notify you about your service. Cpu usage more than 0. Its scared!"
 
 
 tasks_config:
   - task_name: task1
-    target: http://host.docker.internal:9090
+    target: http://45.142.213.160:9091
     path: /
 
 alerting_config:
-  host: http://host.docker.internal:8081
+  host: http://localhost:8081
   path: /
   timeout: 123
 
 server:
-  port: 8081
+  port: 8080

@@ -30,8 +30,10 @@ public class MetricsCollectionManagerImpl implements MetricsCollectionManager {
         ExportMetricRequestParams exportMetricRequestParams = moduleRequestMapper.mapExportMetricRequestParams(request);
 
         List<Metric> metrics = metricsCollectionService.exportMetrics(exportMetricRequestParams);
-        tsStorageClient.addDataPoints(request.getFetchName(), metrics);
-        // anomalyMetricsAnalysisService.analyzeMetrics(metrics, request.getTaskRequestModel());
+        try {
+            tsStorageClient.addDataPoints(request.getFetchName(), metrics);
+        } catch (Exception e) {}
+        anomalyMetricsAnalysisService.analyzeMetrics(metrics, request.getTaskRequestModel());
         return metrics;
     }
 

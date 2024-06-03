@@ -3,6 +3,7 @@ package org.jargus.analyze.repository;
 import lombok.RequiredArgsConstructor;
 import org.jargus.analyze.RuleMapper;
 import org.jargus.analyze.model.MetricAnalysisRule;
+import org.jargus.configuration.model.AlertingConfig;
 import org.jargus.configuration.model.AppConfig;
 import org.jargus.configuration.model.NotificationRuleConfig;
 import org.jargus.configuration.model.TaskConfig;
@@ -32,5 +33,10 @@ public class RuleRepositoryImpl implements RuleRepository {
         } else {
             throw new IllegalArgumentException("Unknown task");
         }
+    }
+
+    @Override
+    public AlertingConfig getUri() {
+        return appConfig.getAlertingConfig();
     }
 }

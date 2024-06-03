@@ -2,6 +2,7 @@ package org.jargus.alert.model;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Bazhov N.S.

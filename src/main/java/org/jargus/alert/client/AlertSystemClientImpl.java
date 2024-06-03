@@ -1,7 +1,10 @@
 package org.jargus.alert.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.jargus.alert.model.Event;
+import org.jargus.alert.model.Message;
 import org.jargus.configuration.model.AlertingConfig;
 import org.jargus.configuration.model.AppConfig;
 import org.springframework.http.MediaType;
@@ -25,7 +28,13 @@ public class AlertSystemClientImpl implements AlertSystemClient {
     public void alert(Event event) {
         AlertingConfig alertingConfig = appConfig.getAlertingConfig();
         if (alertingConfig != null){
-            String body = defaultClient.post().uri(alertingConfig.getHost() + alertingConfig.getPath()).contentType(MediaType.TEXT_PLAIN).body(event.getMessage().toString()).retrieve().body(String.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            try {
+                String body = defaultClient.post().uri(alertingConfig.getHost() + alertingConfig.getPath()).contentType(MediaType.APPLICATION_JSON).body(objectMapper.writeValueAsString(event.getMessage())).retrieve().body(String.class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
