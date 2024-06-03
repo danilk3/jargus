@@ -5,6 +5,6 @@ import org.jargus.analyze.model.MetricAnalysisRule;
 /**
  * @author Bazhov N.S.
  */
-public interface RuleRepository {
+public interface    RuleRepository {
     MetricAnalysisRule getRuleByName(String taskName, String ruleName);
 }

@@ -11,6 +11,5 @@ import lombok.Getter;
 public class Event {
     boolean pass;
     String url;
-
     Message message;
 }

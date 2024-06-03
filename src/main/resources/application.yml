@@ -14,7 +14,7 @@ global_config:
       param_name1: param_value1
   notification_rules_config:
     - name: system_cpu_usage
-      condition: "moreThan 0"
+      condition: ">0"
       flags:
         - flag1
         - flag2
