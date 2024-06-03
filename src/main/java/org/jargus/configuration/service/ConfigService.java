@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import org.jargus.configuration.mapper.ConfigMapper;
 import org.jargus.configuration.model.AppConfig;
 import org.jargus.database.dao.TsStorageClient;
+import org.springframework.stereotype.Service;
 
 /**
  * @author kotelnikovdan
  */
 @AllArgsConstructor
+@Service
 public class ConfigService {
 
     private AppConfig appConfig;

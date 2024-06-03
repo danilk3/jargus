@@ -23,11 +23,11 @@ global_config:
 
 tasks_config:
   - task_name: task1
-    target: http://localhost:9090
+    target: http://host.docker.internal:9090
     path: /
 
 alerting_config:
-  host: http://localhost:8081
+  host: http://host.docker.internal:8081
   path: /
   timeout: 123
 

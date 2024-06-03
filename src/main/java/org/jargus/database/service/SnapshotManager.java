@@ -37,8 +37,10 @@ public class SnapshotManager {
     }
 
     @PostConstruct
-    public void loadSnapshot() throws IOException {
-        String snapshotString = Files.readString(Paths.get(SNAPSHOT_FILE_NAME), Charset.defaultCharset());
-        tsStorage.loadSnapshot(snapshotString);
+    public void loadSnapshot() {
+        try {
+            String snapshotString = Files.readString(Paths.get(SNAPSHOT_FILE_NAME), Charset.defaultCharset());
+            tsStorage.loadSnapshot(snapshotString);
+        } catch (Exception ex) {}
     }
 }
