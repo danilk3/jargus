@@ -22,7 +22,6 @@ public class MetricsCollectionManagerImpl implements MetricsCollectionManager {
     private final MetricsCollectionService metricsCollectionService;
     private final AnomalyMetricsAnalysisService anomalyMetricsAnalysisService;
     private final TsStorageClient tsStorageClient;
-
     private final ModuleRequestMapper moduleRequestMapper;
 
     @Override
@@ -31,8 +30,8 @@ public class MetricsCollectionManagerImpl implements MetricsCollectionManager {
         ExportMetricRequestParams exportMetricRequestParams = moduleRequestMapper.mapExportMetricRequestParams(request);
 
         List<Metric> metrics = metricsCollectionService.exportMetrics(exportMetricRequestParams);
-        anomalyMetricsAnalysisService.analyzeMetrics(metrics, request.getTaskRequestModel());
-
+        tsStorageClient.addDataPoints(request.getFetchName(), metrics);
+        // anomalyMetricsAnalysisService.analyzeMetrics(metrics, request.getTaskRequestModel());
         return metrics;
     }
 

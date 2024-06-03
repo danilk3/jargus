@@ -17,6 +17,8 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.google.guava:guava:11.0.2'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
+
 
     // Client
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0'

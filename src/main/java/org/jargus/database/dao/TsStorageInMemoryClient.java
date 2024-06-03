@@ -1,5 +1,9 @@
 package org.jargus.database.dao;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.jargus.common.dto.MetricRequest;
 import org.jargus.common.model.Metric;
 import org.jargus.database.service.TsStorage;
@@ -14,11 +18,13 @@ import java.util.*;
 @Component
 public class TsStorageInMemoryClient implements TsStorageClient {
 
-    private final Map<String, TsStorage> tsStorageMap = new HashMap<>();
+    private Map<String, TsStorage> tsStorageMap = new HashMap<>();
     private final TaskRepository taskRepository;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public TsStorageInMemoryClient(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
 
@@ -62,6 +68,24 @@ public class TsStorageInMemoryClient implements TsStorageClient {
         );
 
         return result;
+    }
+
+    @Override
+    public void removeTasks(List<String> taskNamesToDelete) {
+        taskNamesToDelete.forEach(
+                tsStorageMap::remove
+        );
+    }
+
+    @Override
+    public String getSerializedSnapshot() throws JsonProcessingException {
+        return objectMapper.writeValueAsString(tsStorageMap);
+    }
+
+    @Override
+    public void loadSnapshot(String snapshotString) throws JsonProcessingException {
+        TypeReference<HashMap<String,TsStorage>> typeReference = new TypeReference<>(){};
+        this.tsStorageMap = objectMapper.readValue(snapshotString, typeReference);
     }
 
     private List<Metric> readFromAllFetches(List<MetricRequest> metricRequests) {
