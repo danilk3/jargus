@@ -27,7 +27,7 @@ tasks_config:
     path: /
 
 alerting_config:
-  host: http://localhost:8081
+  host: http://62.84.114.36:8084
   path: /
   timeout: 123
 
