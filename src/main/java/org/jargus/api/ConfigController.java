@@ -26,7 +26,7 @@ public class ConfigController {
 
     @PatchMapping
     public AppConfig updateConfig(@RequestBody AppConfig newConfig) {
-        configService.setConfig(newConfig);
+        configService.updateConfig(newConfig);
         return configService.getConfig();
     }
 

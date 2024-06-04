@@ -19,13 +19,17 @@ public class ConfigService {
     private TsStorageClient tsStorageClient;
     private ConfigMapper configMapper;
 
-    public void setConfig(AppConfig newConfig) {
+    public void updateConfig(AppConfig newConfig) {
         configMapper.updateAppConfig(newConfig, appConfig);
     }
 
     public void deleteTaskConfigs(List<String> taskNamesToDelete) {
         appConfig.deleteTaskConfigs(taskNamesToDelete);
         tsStorageClient.removeTasks(taskNamesToDelete);
+    }
+
+    public void setConfig(AppConfig newConfig) {
+        appConfig.setConfig(newConfig);
     }
 
     public AppConfig getConfig() {
