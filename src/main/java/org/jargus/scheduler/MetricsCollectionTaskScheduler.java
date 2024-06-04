@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class MetricsCollectionTaskScheduler {
     private final TaskService taskService;
 
-    @Scheduled(fixedDelayString = "${global.fetch.interval:PT1S}")
+    @Scheduled(fixedDelayString = "${global.fetch.interval:PT30S}")
     public void collect(){
         taskService.invokeTasks();
     }

@@ -10,7 +10,7 @@ import java.util.Map;
  */
 @Data
 public class TaskRequestModel {
-    String taskName;
+    public String taskName;
     String uri;
     private Map<String, String> headers = new HashMap<>();
     private Map<String, String> params  = new HashMap<>();

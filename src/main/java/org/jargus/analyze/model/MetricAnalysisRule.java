@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 
+import java.util.List;
+
 /**
  * @author Bazhov N.S.
  */
@@ -12,8 +14,6 @@ import lombok.Getter;
 public class MetricAnalysisRule {
     String name;
     RuleCondition ruleCondition;
-    String label;
-    String message;
-//    Flags flags;
+    List<String> flags;
     String annotation;
 }

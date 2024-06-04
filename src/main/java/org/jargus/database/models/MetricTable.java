@@ -1,5 +1,7 @@
 package org.jargus.database.models;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import lombok.NoArgsConstructor;
 import org.jargus.common.model.DataPoint;
 import org.jargus.common.model.Label;
 import org.jargus.database.exception.UnsupportedGranularityException;
@@ -10,24 +12,32 @@ import java.util.*;
 /**
  * @author Kotelnikov D.M.
  */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@NoArgsConstructor
 public class MetricTable {
 
-    private final String metricName;
+    private String metricName;
 
     public MetricTable(String metricName) {
         this.metricName = metricName;
     }
 
-    private final SortedMap<Long, MetricLabelsValueEntry> countSeconds = new TreeMap<>();
-    private final SortedMap<Long, MetricLabelsValueEntry> countMinutes = new TreeMap<>();
-    private final SortedMap<Long, MetricLabelsValueEntry> countHours = new TreeMap<>();
+    private SortedMap<Long, MetricLabelsValueEntry> countSeconds = new TreeMap<>();
+    private SortedMap<Long, MetricLabelsValueEntry> countMinutes = new TreeMap<>();
+    private SortedMap<Long, MetricLabelsValueEntry> countHours = new TreeMap<>();
 
     public synchronized void addDataPoint(DataPoint dataPoint, List<Label> labels) {
         long timestamp = dataPoint.timestamp();
         double value = dataPoint.value();
-        countSeconds.put(TimestampRounder.upToSeconds(timestamp), new MetricLabelsValueEntry(value, labels));
-        countMinutes.put(TimestampRounder.upToMinutes(timestamp), new MetricLabelsValueEntry(value, labels));
-        countHours.put(TimestampRounder.upToHours(timestamp), new MetricLabelsValueEntry(value, labels));
+        synchronized (countSeconds) {
+            countSeconds.put(TimestampRounder.upToSeconds(timestamp), new MetricLabelsValueEntry(value, labels));
+        }
+        synchronized (countMinutes) {
+            countMinutes.put(TimestampRounder.upToMinutes(timestamp), new MetricLabelsValueEntry(value, labels));
+        }
+        synchronized (countHours) {
+            countHours.put(TimestampRounder.upToHours(timestamp), new MetricLabelsValueEntry(value, labels));
+        }
     }
 
     public Map<Long, MetricLabelsValueEntry> readDataPoints(Granularity granularity, Optional<Long> fromTime, Optional<Long> toTime) {
@@ -104,27 +114,33 @@ public class MetricTable {
                         long minutesDateTill,
                         long hoursDateTill) {
         long secondsKey = TimestampRounder.upToSeconds(secondsDateTill);
-        for (Long key : countSeconds.keySet()) {
-            if (key >= secondsKey) {
-                break;
+        synchronized (countSeconds) {
+            for (Long key : countSeconds.keySet()) {
+                if (key >= secondsKey) {
+                    break;
+                }
+                countSeconds.remove(key);
             }
-            countSeconds.remove(key);
         }
 
         long minutesKey = TimestampRounder.upToMinutes(minutesDateTill);
-        for (Long key : countMinutes.keySet()) {
-            if (key >= minutesKey) {
-                break;
+        synchronized (countMinutes) {
+            for (Long key : countMinutes.keySet()) {
+                if (key >= minutesKey) {
+                    break;
+                }
+                countMinutes.remove(key);
             }
-            countMinutes.remove(key);
         }
 
         long hoursKey = TimestampRounder.upToHours(hoursDateTill);
-        for (Long key : countHours.keySet()) {
-            if (key >= hoursKey) {
-                break;
+        synchronized (countHours) {
+            for (Long key : countHours.keySet()) {
+                if (key >= hoursKey) {
+                    break;
+                }
+                countHours.remove(key);
             }
-            countHours.remove(key);
         }
     }
 

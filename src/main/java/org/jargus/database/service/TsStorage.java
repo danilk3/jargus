@@ -1,6 +1,8 @@
 package org.jargus.database.service;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.google.common.collect.Sets;
+import lombok.NoArgsConstructor;
 import org.jargus.common.model.DataPoint;
 import org.jargus.common.model.Label;
 import org.jargus.common.model.Metric;
@@ -12,18 +14,21 @@ import org.jargus.database.models.MetricTable;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
  * @author Kotelnikov D.M.
  */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@NoArgsConstructor
 public class TsStorage {
 
-    private final Map<Integer, MetricTable> metrics = new HashMap<>();
-    private final Map<Integer, Set<Integer>> labelOccurrencesMap = new HashMap<>();
-    private final Duration metricSecondsTtl;
-    private final Duration metricMinutesTtl;
-    private final Duration metricHoursTtl;
+    private Map<Integer, MetricTable> metrics = new ConcurrentHashMap<>();
+    private Map<Integer, Set<Integer>> labelOccurrencesMap = new ConcurrentHashMap<>();
+    private Duration metricSecondsTtl;
+    private Duration metricMinutesTtl;
+    private Duration metricHoursTtl;
 
     public TsStorage(TsDbConfig tsDbConfig) {
         this.metricSecondsTtl = tsDbConfig.getMetricSecondsTtl();
@@ -43,7 +48,6 @@ public class TsStorage {
             metricTablesToSearch = labelOccurrencesMap.getOrDefault(metricName.hashCode(), Set.of());
         } else {
             for (Label label : labels) {
-                // todo: уйти от hashCode()
                 int labelOccurrenceKey = (metricName + label.name() + label.value()).hashCode();
                 if (metricTablesToSearch.isEmpty()) {
                     metricTablesToSearch = labelOccurrencesMap.getOrDefault(labelOccurrenceKey, Set.of());
@@ -90,20 +94,17 @@ public class TsStorage {
             metricTableKeyString.append(label.name()).append(label.value());
         }
 
-        // todo: уйти от hashCode()
         int metricTableKey = metricTableKeyString.toString().hashCode();
         MetricTable metricTable = metrics.computeIfAbsent(metricTableKey, key -> new MetricTable(metric.name()));
         metricTable.addDataPoint(metric.datapoint(), metric.labels());
 
         for (Label label : metric.labels()) {
-            // todo: уйти от hashCode()
             int labelOccurrenceKey = (metric.name() + label.name() + label.value()).hashCode();
             Set<Integer> labelOccurrences = labelOccurrencesMap
                     .computeIfAbsent(labelOccurrenceKey, key -> new TreeSet<>());
             labelOccurrences.add(metricTableKey);
         }
 
-        // todo: уйти от hashCode()
         Set<Integer> labelOccurrences = labelOccurrencesMap
                 .computeIfAbsent(metric.name().hashCode(), key -> new TreeSet<>());
         labelOccurrences.add(metricTableKey);

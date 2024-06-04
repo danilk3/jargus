@@ -13,9 +13,10 @@ public class RuleMapper {
     public MetricAnalysisRule mapRule(NotificationRuleConfig notificationRuleConfig){
         return MetricAnalysisRule.builder()
                 .name(notificationRuleConfig.getName())
+                .flags(notificationRuleConfig.getFlags())
+
                 .ruleCondition(new RuleCondition(notificationRuleConfig.getCondition()))
                 .annotation(notificationRuleConfig.getAnnotation())
-                .message(notificationRuleConfig.getAnnotation())
                 .build();
     }
 }

@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Bazhov N.S.
@@ -36,5 +38,15 @@ public class CollectMetricsClientImpl implements CollectMetricsClient {
         }
 
         return result;
+    }
+
+    @Override
+    public List<String> exportRaw(String uri) {
+
+        // TODO: add exception handling
+
+        String body = Objects.requireNonNull(defaultClient.get().uri(uri).retrieve().body(String.class));
+
+        return Arrays.stream(body.split("\n")).toList();
     }
 }

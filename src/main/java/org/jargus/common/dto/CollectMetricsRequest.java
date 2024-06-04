@@ -14,4 +14,8 @@ public abstract class CollectMetricsRequest {
     public CollectMetricsRequest(TaskRequestModel taskRequestModel) {
         this.taskRequestModel = taskRequestModel;
     }
+
+    public String getFetchName() {
+        return taskRequestModel.taskName;
+    }
 }

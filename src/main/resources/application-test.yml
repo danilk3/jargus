@@ -1,10 +1,10 @@
 global_config:
-  tsdb_config: # Settings to database
-    metric_seconds_ttl: P30D # Time to live metrics with second interval
-    metric_minutes_ttl: P30D # Time to live metrics with minutes interval
-    metric_hours_ttl: P30D # Time to live metrics with hours interval
+  tsdb_config:
+    metric_seconds_ttl: PT5M
+    metric_minutes_ttl: PT10M
+    metric_hours_ttl: PT15M
   fetch_config:
-    interval: PT10S
+    interval: PT30S
     timeout: 123
   requests_config:
     headers:
@@ -23,15 +23,13 @@ global_config:
 
 tasks_config:
   - task_name: task1
-    target: http://localhost:8081
-    path: /actuator/prometheus
-
-  - task_name: task2
-    target: http://localhost:8082
-    path: /actuator/prometheus
+    target: http://host.docker.internal:9090
+    path: /
 
 alerting_config:
-  host: http://localhost:8081
+  host: http://host.docker.internal:8081
   path: /
   timeout: 123
 
+server:
+  port: 8081

@@ -22,7 +22,7 @@ public class MetricsCollectionServiceImpl implements MetricsCollectionService {
 
     @Override
     public List<Metric> exportMetrics(ExportMetricRequestParams exportMetricRequestParams) {
-        List<PrometheusResponseDto<PrometheusMetricsResponseDataDto>> result = collectMetricsClient.export(exportMetricRequestParams.getUri());
-        return metricMapper.map(result);
+            List<PrometheusResponseDto<PrometheusMetricsResponseDataDto>> result = collectMetricsClient.export(exportMetricRequestParams.getUri());
+            return metricMapper.map(result);
     }
 }

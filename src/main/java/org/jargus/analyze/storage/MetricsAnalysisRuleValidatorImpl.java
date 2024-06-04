@@ -6,6 +6,7 @@ import org.jargus.alert.model.Message;
 import org.jargus.analyze.model.MetricAnalysisRule;
 import org.jargus.analyze.repository.RuleRepository;
 import org.jargus.common.model.Metric;
+import org.jargus.configuration.model.AlertingConfig;
 import org.jargus.scheduler.domain.TaskRequestModel;
 import org.springframework.stereotype.Component;
 
@@ -20,11 +21,13 @@ public class MetricsAnalysisRuleValidatorImpl implements MetricsAnalysisRuleVali
     @Override
     public Event matches(Metric metric, TaskRequestModel taskRequestModel) {
 
-        MetricAnalysisRule metricAnalysisRule = ruleRepository.getRuleByName(taskRequestModel.getTaskName(), "system_cpu_usage");
+//        MetricAnalysisRule metricAnalysisRule = ruleRepository.getRuleByName(taskRequestModel.getTaskName(), "system_cpu_usage");
+        MetricAnalysisRule metricAnalysisRule = ruleRepository.getRuleByName(taskRequestModel.getTaskName(), metric.name());
+        AlertingConfig alertingConfig = ruleRepository.getUri();
         if (metric.name().equals(metricAnalysisRule.getName())){
             return Event.builder()
-                    .url(metricAnalysisRule.getAnnotation())
-                    .message(Message.builder().type(metricAnalysisRule.getLabel()).message(metricAnalysisRule.getMessage()).build())
+                    .url(alertingConfig.getHost() + alertingConfig.getPath())
+                    .message(new Message(metricAnalysisRule.getFlags(), metricAnalysisRule.getAnnotation()))
                     .pass(metricAnalysisRule.getRuleCondition().check(metric.datapoint().value()))
                     .build();
         }

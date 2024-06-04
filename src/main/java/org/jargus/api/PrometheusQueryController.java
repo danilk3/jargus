@@ -11,13 +11,12 @@ import org.springframework.web.client.RestClient;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collection;
 
 /**
  * @author Kotelnikov D.M.
  */
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/*/api/v1")
 public class PrometheusQueryController {
 
     private final RestClient defaultClient;
@@ -31,10 +30,11 @@ public class PrometheusQueryController {
     @RequestMapping(value = "/**", method = {RequestMethod.GET, RequestMethod.POST})
     public ResponseEntity<String> evaluateInstantQuery(HttpServletRequest request) throws URISyntaxException {
         String query = request.getQueryString() == null ? "" : request.getQueryString();
-        Collection<TaskRequestModel> tasks = taskRepository.getAllTasks();
-        for (TaskRequestModel taskRequestModel : tasks) {
+        String taskName = request.getRequestURI().split("/")[1];
+        TaskRequestModel taskRequestModel = taskRepository.getTaskModel(taskName);
+        if (taskRequestModel != null) {
             return defaultClient.get()
-                    .uri(new URI((taskRequestModel.getUri() + request.getRequestURI() + "?" + query).replaceAll("(?<!http:)//", "/")))
+                    .uri(new URI((taskRequestModel.getUri() + request.getRequestURI().replaceAll("/" + taskName, "") + "?" + query).replaceAll("(?<!http:)//", "/")))
                     .retrieve()
                     .toEntity(String.class);
         }

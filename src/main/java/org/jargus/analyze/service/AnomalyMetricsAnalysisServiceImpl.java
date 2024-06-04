@@ -23,10 +23,12 @@ public class AnomalyMetricsAnalysisServiceImpl implements AnomalyMetricsAnalysis
     public void analyzeMetrics(List<Metric> metrics, TaskRequestModel taskRequestModel) {
         for (Metric metric: metrics) {
 
-            Event event = metricsAnalysisRuleValidator.matches(metric, taskRequestModel);
-            if (event != null && event.isPass()){
-                alertSystemClient.alert(event);
-            }
+            try {
+                Event event = metricsAnalysisRuleValidator.matches(metric, taskRequestModel);
+                if (event != null && event.isPass()){
+                    alertSystemClient.alert(event);
+                }
+            } catch (Exception e){}
         }
     }
 }
